@@ -1,19 +1,347 @@
-<html>
-  <head>
-    <title>Panie,ja nie umiem</title>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nauka – Moje Materiały</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-              <h1><a href = "ruchopis.html">Fizyka - ruch opis</a></h1>
-  
-              <h1><a href = "zdaniapojedyncze.html">Zdania Pojedyncze</a></h1>a></h1>
+  :root {
+    --bg: #07080d;
+    --bg2: #0e1018;
+    --card: #12151f;
+    --border: #1e2236;
+    --text: #eceef7;
+    --muted: #6b7094;
+  }
 
-              <h1><a href = "latarnik.html">latarnik</a></h1>a></h1>
-    
-              <h1><a href = "balansowanie_rownan.html">rownania chemiczne</a></h1>a></h1>
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 
-    
-              <h1><a href = "odpytkahist.html">odpowiedz historia</a></h1>a></h1>
-              <h1><a href = "potegi.html">Potęgi i Pierwiastki</a></h1>a></h1>
+  /* BG GRID */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
 
-    
-  </head>
+  /* GLOW BLOBS */
+  .blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(100px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.35;
+  }
+  .blob-1 { width: 500px; height: 500px; background: #1a2fff; top: -150px; left: -100px; }
+  .blob-2 { width: 400px; height: 400px; background: #ff3b6b; bottom: -100px; right: -100px; }
+  .blob-3 { width: 300px; height: 300px; background: #00e5a0; top: 50%; left: 50%; transform: translate(-50%,-50%); opacity: 0.12; }
+
+  /* HEADER */
+  header {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 4rem 1.5rem 3rem;
+  }
+
+  .eyebrow {
+    display: inline-block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 0.3rem 1rem;
+    margin-bottom: 1.25rem;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  h1.site-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+    animation: fadeUp 0.5s 0.1s ease both;
+  }
+
+  h1.site-title .accent {
+    display: inline-block;
+    position: relative;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255,255,255,0.35);
+  }
+
+  .site-subtitle {
+    font-size: 1.05rem;
+    color: var(--muted);
+    animation: fadeUp 0.5s 0.2s ease both;
+  }
+
+  /* GRID */
+  .cards-wrap {
+    position: relative;
+    z-index: 10;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem 5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  /* SUBJECT CARD */
+  .subject-card {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: var(--text);
+    overflow: hidden;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .subject-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--card-glow, transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: inherit;
+  }
+
+  .subject-card:hover {
+    transform: translateY(-4px) scale(1.01);
+    border-color: var(--card-accent, #3b82f6);
+    box-shadow: 0 8px 40px var(--card-shadow, rgba(59,130,246,0.2));
+  }
+
+  .subject-card:hover::before { opacity: 1; }
+
+  /* Corner accent */
+  .subject-card::after {
+    content: '→';
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    font-size: 1rem;
+    color: var(--card-accent, #3b82f6);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: all 0.2s ease;
+  }
+
+  .subject-card:hover::after {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .card-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--card-icon-bg, rgba(59,130,246,0.12));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 0.25rem;
+    border: 1px solid var(--card-icon-border, rgba(59,130,246,0.2));
+  }
+
+  .card-subject {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--card-accent, #3b82f6);
+  }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--text);
+  }
+
+  .card-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .card-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    background: var(--card-icon-bg);
+    color: var(--card-accent);
+    border: 1px solid var(--card-icon-border);
+    width: fit-content;
+    margin-top: auto;
+  }
+
+  /* Per-card colors */
+  .c-blue  {
+    --card-accent: #60a5fa;
+    --card-shadow: rgba(96,165,250,0.18);
+    --card-glow: radial-gradient(circle at 0% 0%, rgba(96,165,250,0.06) 0%, transparent 70%);
+    --card-icon-bg: rgba(96,165,250,0.1);
+    --card-icon-border: rgba(96,165,250,0.2);
+  }
+  .c-green {
+    --card-accent: #34d399;
+    --card-shadow: rgba(52,211,153,0.18);
+    --card-glow: radial-gradient(circle at 0% 0%, rgba(52,211,153,0.06) 0%, transparent 70%);
+    --card-icon-bg: rgba(52,211,153,0.1);
+    --card-icon-border: rgba(52,211,153,0.2);
+  }
+  .c-amber {
+    --card-accent: #fbbf24;
+    --card-shadow: rgba(251,191,36,0.18);
+    --card-glow: radial-gradient(circle at 0% 0%, rgba(251,191,36,0.07) 0%, transparent 70%);
+    --card-icon-bg: rgba(251,191,36,0.1);
+    --card-icon-border: rgba(251,191,36,0.2);
+  }
+  .c-rose {
+    --card-accent: #f87171;
+    --card-shadow: rgba(248,113,113,0.18);
+    --card-glow: radial-gradient(circle at 0% 0%, rgba(248,113,113,0.06) 0%, transparent 70%);
+    --card-icon-bg: rgba(248,113,113,0.1);
+    --card-icon-border: rgba(248,113,113,0.2);
+  }
+  .c-purple {
+    --card-accent: #a78bfa;
+    --card-shadow: rgba(167,139,250,0.18);
+    --card-glow: radial-gradient(circle at 0% 0%, rgba(167,139,250,0.06) 0%, transparent 70%);
+    --card-icon-bg: rgba(167,139,250,0.1);
+    --card-icon-border: rgba(167,139,250,0.2);
+  }
+  .c-teal {
+    --card-accent: #2dd4bf;
+    --card-shadow: rgba(45,212,191,0.18);
+    --card-glow: radial-gradient(circle at 0% 0%, rgba(45,212,191,0.06) 0%, transparent 70%);
+    --card-icon-bg: rgba(45,212,191,0.1);
+    --card-icon-border: rgba(45,212,191,0.2);
+  }
+
+  /* STAGGERED ANIMATION */
+  .subject-card:nth-child(1) { animation-delay: 0.1s; }
+  .subject-card:nth-child(2) { animation-delay: 0.16s; }
+  .subject-card:nth-child(3) { animation-delay: 0.22s; }
+  .subject-card:nth-child(4) { animation-delay: 0.28s; }
+  .subject-card:nth-child(5) { animation-delay: 0.34s; }
+  .subject-card:nth-child(6) { animation-delay: 0.40s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 480px) {
+    .cards-wrap { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<header>
+  <div class="eyebrow">📚 Materiały do nauki</div>
+  <h1 class="site-title">Nauka<br><span class="accent">& Sprawdziany</span></h1>
+  <p class="site-subtitle">Wybierz przedmiot i zacznij ćwiczyć</p>
+</header>
+
+<div class="cards-wrap">
+
+  <a href="ruchopis.html" class="subject-card c-blue">
+    <div class="card-icon">🚀</div>
+    <div class="card-subject">Fizyka</div>
+    <div class="card-title">Ruch – Opis i Kinematyka</div>
+    <div class="card-desc">Prędkość, przyspieszenie, wykresy ruchu i podstawowe wzory fizyki.</div>
+    <div class="card-tag">Teoria + Wzory</div>
+  </a>
+
+  <a href="zdaniapojedyncze.html" class="subject-card c-green">
+    <div class="card-icon">📝</div>
+    <div class="card-subject">Język Polski</div>
+    <div class="card-title">Zdania Pojedyncze</div>
+    <div class="card-desc">Składnia, części zdania, orzeczenie, podmiot i inne elementy zdania.</div>
+    <div class="card-tag">Gramatyka</div>
+  </a>
+
+  <a href="balansowanie_rownan.html" class="subject-card c-teal">
+    <div class="card-icon">⚗️</div>
+    <div class="card-subject">Chemia</div>
+    <div class="card-title">Równania Chemiczne</div>
+    <div class="card-desc">Bilansowanie równań, stechiometria i reakcje chemiczne krok po kroku.</div>
+    <div class="card-tag">Ćwiczenia</div>
+  </a>
+
+  <a href="odpytkahist.html" class="subject-card c-rose">
+    <div class="card-icon">🏛️</div>
+    <div class="card-subject">Historia</div>
+    <div class="card-title">Pytania i Odpowiedzi</div>
+    <div class="card-desc">Daty, postacie, wydarzenia – odpowiedzi na typowe pytania z historii.</div>
+    <div class="card-tag">Quiz</div>
+  </a>
+
+  <a href="potegi.html" class="subject-card c-purple">
+    <div class="card-icon">✕²</div>
+    <div class="card-subject">Matematyka</div>
+    <div class="card-title">Potęgi i Pierwiastki</div>
+    <div class="card-desc">Wzory, działania i 150 zadań ćwiczeniowych – teoria i praktyka.</div>
+    <div class="card-tag">150 pytań</div>
+  </a>
+
+</div>
+
+<footer>
+  Twoje materiały do nauki &nbsp;·&nbsp; Powodzenia na sprawdzianie! 💪
+</footer>
+
+</body>
 </html>
