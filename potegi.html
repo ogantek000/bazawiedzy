@@ -1,1277 +1,1492 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <a href="index.html">Powrót</a>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Potęgi i Pierwiastki – Nauka i Ćwiczenia</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fira+Code:wght@500;600&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg: #0f1117;
-    --bg2: #171b26;
-    --bg3: #1e2333;
-    --card: #232840;
-    --border: #2e3555;
-    --accent: #6c63ff;
-    --accent2: #ff6b6b;
-    --accent3: #43e97b;
-    --accent4: #f7b731;
-    --text: #e8eaf6;
-    --text2: #9ba3c7;
-    --text3: #5c6490;
-    --green: #43e97b;
-    --red: #ff6b6b;
-    --radius: 14px;
-    --shadow: 0 4px 24px rgba(0,0,0,0.4);
-  }
-
-  body {
-    font-family: 'Nunito', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* HEADER */
-  header {
-    background: linear-gradient(135deg, #1a1f35 0%, #2a1f5e 100%);
-    border-bottom: 1px solid var(--border);
-    padding: 0 2rem;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: var(--shadow);
-  }
-
-  .header-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    height: 64px;
-  }
-
-  .logo {
-    font-size: 1.5rem;
-    font-weight: 900;
-    background: linear-gradient(90deg, var(--accent), #a78bfa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    white-space: nowrap;
-  }
-
-  /* TABS */
-  .tabs {
-    display: flex;
-    gap: 0.25rem;
-    background: var(--bg3);
-    border-radius: 10px;
-    padding: 4px;
-    margin-left: auto;
-  }
-
-  .tab-btn {
-    padding: 0.45rem 1.4rem;
-    border-radius: 8px;
-    border: none;
-    background: transparent;
-    color: var(--text2);
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .tab-btn.active {
-    background: var(--accent);
-    color: #fff;
-    box-shadow: 0 2px 12px rgba(108,99,255,0.4);
-  }
-
-  /* CONTENT */
-  .content {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 2rem 1.5rem;
-  }
-
-  .tab-panel { display: none; }
-  .tab-panel.active { display: block; }
-
-  /* =================== TEORIA =================== */
-  .theory-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.25rem;
-  }
-
-  .theory-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    transition: border-color 0.2s, transform 0.2s;
-  }
-
-  .theory-card:hover {
-    border-color: var(--accent);
-    transform: translateY(-2px);
-  }
-
-  .theory-card.full-width {
-    grid-column: 1 / -1;
-  }
-
-  .theory-card h2 {
-    font-size: 1.1rem;
-    font-weight: 800;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .tag {
-    display: inline-block;
-    padding: 2px 10px;
-    border-radius: 20px;
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .tag-purple { background: rgba(108,99,255,0.2); color: #a78bfa; }
-  .tag-red    { background: rgba(255,107,107,0.2); color: #ff8f8f; }
-  .tag-green  { background: rgba(67,233,123,0.2); color: #43e97b; }
-  .tag-yellow { background: rgba(247,183,49,0.2); color: #f7c747; }
-  .tag-blue   { background: rgba(56,189,248,0.2); color: #7dd3fc; }
-
-  .formula-block {
-    background: var(--bg3);
-    border-left: 3px solid var(--accent);
-    border-radius: 0 8px 8px 0;
-    padding: 0.75rem 1rem;
-    margin: 0.5rem 0;
-    font-family: 'Fira Code', monospace;
-    font-size: 0.95rem;
-    color: #c4b5fd;
-  }
-
-  .formula-block .desc {
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.8rem;
-    color: var(--text2);
-    margin-top: 0.2rem;
-  }
-
-  .formula-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    margin: 0.4rem 0;
-  }
-
-  .formula-name {
-    min-width: 160px;
-    font-size: 0.85rem;
-    color: var(--text2);
-    padding-top: 0.2rem;
-  }
-
-  .formula-math {
-    font-family: 'Fira Code', monospace;
-    color: #c4b5fd;
-    font-size: 0.95rem;
-  }
-
-  .formula-math.green { color: var(--accent3); }
-  .formula-math.yellow { color: var(--accent4); }
-  .formula-math.red { color: var(--accent2); }
-
-  .section-title {
-    font-size: 1.7rem;
-    font-weight: 900;
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  .tip-box {
-    background: rgba(108,99,255,0.08);
-    border: 1px solid rgba(108,99,255,0.3);
-    border-radius: 10px;
-    padding: 0.9rem 1.1rem;
-    font-size: 0.9rem;
-    color: var(--text2);
-    margin-top: 0.75rem;
-  }
-
-  .tip-box strong { color: var(--accent); }
-
-  .example-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-    gap: 0.5rem;
-    margin-top: 0.75rem;
-  }
-
-  .example-item {
-    background: var(--bg3);
-    border-radius: 8px;
-    padding: 0.5rem 0.75rem;
-    font-family: 'Fira Code', monospace;
-    font-size: 0.85rem;
-    color: #7dd3fc;
-    text-align: center;
-  }
-
-  table.rules-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.85rem;
-    margin-top: 0.5rem;
-  }
-
-  table.rules-table th {
-    background: var(--bg3);
-    color: var(--text2);
-    font-weight: 700;
-    padding: 0.5rem 0.75rem;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
-  }
-
-  table.rules-table td {
-    padding: 0.45rem 0.75rem;
-    border-bottom: 1px solid rgba(46,53,85,0.5);
-    vertical-align: middle;
-  }
-
-  table.rules-table td:first-child { color: var(--text2); }
-  table.rules-table td:nth-child(2) { font-family: 'Fira Code', monospace; color: #c4b5fd; }
-  table.rules-table td:nth-child(3) { font-family: 'Fira Code', monospace; color: #43e97b; }
-
-  /* =================== PRAKTYKA =================== */
-  .practice-header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .stats-row {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-  }
-
-  .stat-pill {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 0.4rem 1rem;
-    font-size: 0.85rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-
-  .stat-pill span { color: var(--text2); font-weight: 600; }
-  .stat-pill .val { color: var(--accent4); }
-  .stat-pill .val.green { color: var(--green); }
-  .stat-pill .val.red { color: var(--red); }
-
-  .filter-bar {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    margin-bottom: 1.25rem;
-  }
-
-  .filter-btn {
-    padding: 0.4rem 1rem;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    background: var(--card);
-    color: var(--text2);
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .filter-btn.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #fff;
-  }
-
-  /* QUESTION CARD */
-  .question-card {
-    background: var(--card);
-    border: 2px solid var(--border);
-    border-radius: 18px;
-    padding: 2rem;
-    max-width: 720px;
-    margin: 0 auto;
-    box-shadow: var(--shadow);
-    animation: slideIn 0.3s ease;
-  }
-
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .question-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.25rem;
-  }
-
-  .question-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.3rem 0.85rem;
-    border-radius: 20px;
-    font-size: 0.78rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
-
-  .badge-easy   { background: rgba(67,233,123,0.15); color: #43e97b; }
-  .badge-medium { background: rgba(247,183,49,0.15); color: #f7c747; }
-  .badge-hard   { background: rgba(255,107,107,0.15); color: #ff8f8f; }
-
-  .q-number {
-    font-size: 0.85rem;
-    color: var(--text3);
-    font-weight: 700;
-  }
-
-  .question-text {
-    font-size: 1.35rem;
-    font-weight: 800;
-    line-height: 1.5;
-    margin-bottom: 1.75rem;
-    color: var(--text);
-  }
-
-  .question-text .math {
-    font-family: 'Fira Code', monospace;
-    color: #a78bfa;
-    font-size: 1.4rem;
-  }
-
-  /* ANSWERS */
-  .answers-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .answer-btn {
-    background: var(--bg3);
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    padding: 0.9rem 1rem;
-    color: var(--text);
-    font-family: 'Fira Code', monospace;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.18s;
-    text-align: center;
-  }
-
-  .answer-btn:hover:not(:disabled) {
-    border-color: var(--accent);
-    background: rgba(108,99,255,0.1);
-    transform: translateY(-1px);
-  }
-
-  .answer-btn.correct {
-    border-color: var(--green);
-    background: rgba(67,233,123,0.12);
-    color: var(--green);
-  }
-
-  .answer-btn.wrong {
-    border-color: var(--red);
-    background: rgba(255,107,107,0.1);
-    color: var(--red);
-  }
-
-  .answer-btn.reveal {
-    border-color: var(--green);
-    background: rgba(67,233,123,0.08);
-    color: var(--green);
-    opacity: 0.7;
-  }
-
-  /* OPEN ANSWER */
-  .open-answer-row {
-    display: flex;
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .answer-input {
-    flex: 1;
-    background: var(--bg3);
-    border: 2px solid var(--border);
-    border-radius: 10px;
-    padding: 0.75rem 1rem;
-    color: var(--text);
-    font-family: 'Fira Code', monospace;
-    font-size: 1.05rem;
-    font-weight: 600;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .answer-input:focus { border-color: var(--accent); }
-  .answer-input.correct { border-color: var(--green); background: rgba(67,233,123,0.08); }
-  .answer-input.wrong   { border-color: var(--red); background: rgba(255,107,107,0.08); }
-
-  .check-btn, .next-btn, .skip-btn {
-    padding: 0.75rem 1.5rem;
-    border-radius: 10px;
-    border: none;
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 800;
-    cursor: pointer;
-    transition: all 0.18s;
-  }
-
-  .check-btn {
-    background: var(--accent);
-    color: #fff;
-    box-shadow: 0 2px 14px rgba(108,99,255,0.35);
-  }
-
-  .check-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(108,99,255,0.5); }
-
-  .next-btn {
-    background: var(--accent3);
-    color: #0a2015;
-    box-shadow: 0 2px 14px rgba(67,233,123,0.25);
-    display: none;
-  }
-
-  .next-btn.show { display: inline-block; }
-  .next-btn:hover { transform: translateY(-1px); }
-
-  .skip-btn {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text3);
-    font-size: 0.85rem;
-  }
-
-  .skip-btn:hover { border-color: var(--text2); color: var(--text2); }
-
-  /* FEEDBACK */
-  .feedback-box {
-    border-radius: 10px;
-    padding: 0.9rem 1.1rem;
-    font-size: 0.95rem;
-    font-weight: 700;
-    display: none;
-    margin-bottom: 1rem;
-    animation: fadeIn 0.25s ease;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.97); }
-    to   { opacity: 1; transform: scale(1); }
-  }
-
-  .feedback-box.show { display: flex; align-items: center; gap: 0.6rem; }
-  .feedback-box.correct-fb { background: rgba(67,233,123,0.12); border: 1px solid var(--green); color: var(--green); }
-  .feedback-box.wrong-fb   { background: rgba(255,107,107,0.1); border: 1px solid var(--red); color: #ff8f8f; }
-
-  /* PROGRESS */
-  .progress-bar-wrap {
-    background: var(--bg3);
-    border-radius: 20px;
-    height: 6px;
-    margin-bottom: 1.5rem;
-    overflow: hidden;
-  }
-
-  .progress-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent), #a78bfa);
-    border-radius: 20px;
-    transition: width 0.4s ease;
-  }
-
-  /* ACTIONS ROW */
-  .actions-row {
-    display: flex;
-    gap: 0.75rem;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-
-  /* RESULT SCREEN */
-  .result-screen {
-    display: none;
-    text-align: center;
-    padding: 3rem 2rem;
-    background: var(--card);
-    border: 2px solid var(--border);
-    border-radius: 18px;
-    max-width: 520px;
-    margin: 0 auto;
-    animation: slideIn 0.4s ease;
-  }
-
-  .result-screen.show { display: block; }
-
-  .result-emoji {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-    display: block;
-  }
-
-  .result-score {
-    font-size: 3.5rem;
-    font-weight: 900;
-    color: var(--accent4);
-    line-height: 1;
-    margin-bottom: 0.5rem;
-  }
-
-  .result-label {
-    font-size: 1rem;
-    color: var(--text2);
-    margin-bottom: 2rem;
-  }
-
-  .restart-btn {
-    padding: 0.85rem 2.5rem;
-    background: var(--accent);
-    border: none;
-    border-radius: 12px;
-    color: #fff;
-    font-family: 'Nunito', sans-serif;
-    font-size: 1rem;
-    font-weight: 800;
-    cursor: pointer;
-    box-shadow: 0 2px 16px rgba(108,99,255,0.35);
-    transition: all 0.2s;
-  }
-
-  .restart-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(108,99,255,0.5); }
-
-  /* RESPONSIVE */
-  @media (max-width: 600px) {
-    .header-inner { gap: 1rem; }
-    .logo { font-size: 1.1rem; }
-    .tab-btn { padding: 0.4rem 0.8rem; font-size: 0.85rem; }
-    .question-text { font-size: 1.1rem; }
-    .answers-grid { grid-template-columns: 1fr; }
-    .theory-grid { grid-template-columns: 1fr; }
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0d0f1a;
+  --bg2: #131625;
+  --bg3: #1a1e30;
+  --card: #1e2235;
+  --card2: #242840;
+  --border: #2a2f4a;
+  --accent: #7c6fff;
+  --accent2: #ff6b6b;
+  --accent3: #3dd68c;
+  --accent4: #f7b731;
+  --blue: #60a5fa;
+  --pink: #f472b6;
+  --text: #e8eaf6;
+  --text2: #8b93be;
+  --text3: #4a5070;
+  --green: #3dd68c;
+  --red: #ff6b6b;
+  --radius: 16px;
+  --shadow: 0 4px 32px rgba(0,0,0,0.5);
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* ── HEADER ── */
+header {
+  background: linear-gradient(135deg, #151929 0%, #221a4e 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow);
+}
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  height: 68px;
+}
+.back-link {
+  color: var(--text2);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+.back-link:hover { color: var(--text); }
+.logo {
+  font-size: 1.3rem;
+  font-weight: 900;
+  background: linear-gradient(90deg, var(--accent), #c084fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  white-space: nowrap;
+}
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  background: var(--bg3);
+  border-radius: 12px;
+  padding: 4px;
+  margin-left: auto;
+}
+.tab-btn {
+  padding: 0.5rem 1.5rem;
+  border-radius: 9px;
+  border: none;
+  background: transparent;
+  color: var(--text2);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tab-btn.active {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 14px rgba(124,111,255,0.45);
+}
+
+/* ── LAYOUT ── */
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+}
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ══════════════════════════════════
+   TEORIA – nowy układ
+══════════════════════════════════ */
+
+/* Sekcja z lewym paskiem koloru */
+.theory-section {
+  margin-bottom: 2.5rem;
+}
+.theory-section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+.section-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+.section-icon.purple { background: rgba(124,111,255,0.15); border: 1px solid rgba(124,111,255,0.3); }
+.section-icon.green  { background: rgba(61,214,140,0.12); border: 1px solid rgba(61,214,140,0.25); }
+.section-icon.red    { background: rgba(255,107,107,0.12); border: 1px solid rgba(255,107,107,0.25); }
+.section-icon.blue   { background: rgba(96,165,250,0.12); border: 1px solid rgba(96,165,250,0.25); }
+.section-icon.yellow { background: rgba(247,183,49,0.12); border: 1px solid rgba(247,183,49,0.25); }
+.section-icon.pink   { background: rgba(244,114,182,0.12); border: 1px solid rgba(244,114,182,0.25); }
+
+.section-title-text h2 {
+  font-size: 1.3rem;
+  font-weight: 900;
+  line-height: 1.2;
+}
+.section-title-text p {
+  font-size: 0.82rem;
+  color: var(--text2);
+  margin-top: 0.1rem;
+}
+
+/* DEFINICJA – duże wizualne wyjaśnienie */
+.definition-box {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem 2rem;
+  margin-bottom: 1rem;
+}
+.def-formula {
+  font-family: 'Fira Code', monospace;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #c4b5fd;
+  text-align: center;
+  padding: 1.25rem;
+  background: var(--bg3);
+  border-radius: 12px;
+  margin: 1rem 0;
+  letter-spacing: 0.05em;
+  border: 1px solid var(--border);
+}
+.def-formula .base  { color: var(--accent4); font-size: 2.2rem; }
+.def-formula .exp   { color: var(--accent2); font-size: 1.4rem; vertical-align: super; }
+.def-formula .arrow { color: var(--text3); margin: 0 0.5rem; }
+.def-formula .result{ color: var(--accent3); }
+
+.def-labels {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+.def-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+.def-label .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+.dot-yellow { background: var(--accent4); }
+.dot-red    { background: var(--accent2); }
+.dot-green  { background: var(--accent3); }
+
+/* WZORY – karty regułek */
+.rules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 0.75rem;
+}
+.rule-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.rule-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.rule-name {
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text2);
+}
+.rule-formula {
+  font-family: 'Fira Code', monospace;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #c4b5fd;
+  padding: 0.6rem 0.8rem;
+  background: var(--bg3);
+  border-radius: 8px;
+}
+.rule-example {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.88rem;
+  color: var(--accent3);
+  padding: 0.35rem 0.8rem;
+  background: rgba(61,214,140,0.07);
+  border-radius: 6px;
+  border-left: 2px solid var(--accent3);
+}
+.rule-note {
+  font-size: 0.8rem;
+  color: var(--text2);
+  line-height: 1.4;
+}
+
+/* TABLICZKA KWADRATÓW/SZEŚCIANÓW */
+.table-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 0.5rem;
+}
+.table-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.6rem 0.5rem;
+  text-align: center;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.85rem;
+  transition: all 0.15s;
+  cursor: default;
+}
+.table-item:hover {
+  background: var(--card2);
+  border-color: var(--accent);
+  transform: scale(1.05);
+}
+.table-item .base-n { color: var(--text2); font-size: 0.78rem; }
+.table-item .val-n  { color: var(--blue); font-size: 1rem; font-weight: 600; }
+
+/* UWAGI / PUŁAPKI */
+.traps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.75rem;
+}
+.trap-card {
+  border-radius: 14px;
+  padding: 1.1rem 1.25rem;
+  border: 1px solid;
+}
+.trap-card.danger {
+  background: rgba(255,107,107,0.06);
+  border-color: rgba(255,107,107,0.25);
+}
+.trap-card.ok {
+  background: rgba(61,214,140,0.06);
+  border-color: rgba(61,214,140,0.25);
+}
+.trap-card.info {
+  background: rgba(96,165,250,0.06);
+  border-color: rgba(96,165,250,0.25);
+}
+.trap-card.warn {
+  background: rgba(247,183,49,0.06);
+  border-color: rgba(247,183,49,0.25);
+}
+.trap-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.6rem;
+}
+.trap-label.danger { color: var(--accent2); }
+.trap-label.ok     { color: var(--accent3); }
+.trap-label.info   { color: var(--blue); }
+.trap-label.warn   { color: var(--accent4); }
+.trap-formula {
+  font-family: 'Fira Code', monospace;
+  font-size: 1rem;
+  color: var(--text);
+  margin-bottom: 0.4rem;
+}
+.trap-desc {
+  font-size: 0.82rem;
+  color: var(--text2);
+  line-height: 1.45;
+}
+
+/* KROK PO KROKU */
+.steps-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+.steps-title {
+  font-weight: 800;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  color: var(--accent4);
+}
+.steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.step-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+.step-num {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+}
+.step-text {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text2);
+}
+.step-text strong { color: var(--text); }
+.step-text code {
+  font-family: 'Fira Code', monospace;
+  background: var(--bg3);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  color: #c4b5fd;
+  font-size: 0.88rem;
+}
+
+/* INFO BAND */
+.info-band {
+  background: rgba(124,111,255,0.08);
+  border: 1px solid rgba(124,111,255,0.25);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  font-size: 0.88rem;
+  color: var(--text2);
+  margin-top: 0.75rem;
+  line-height: 1.55;
+}
+.info-band strong { color: var(--accent); }
+
+/* divider */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 2rem 0;
+}
+
+/* ══════════════════════════════════
+   PRAKTYKA
+══════════════════════════════════ */
+.practice-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+.stats-row {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.stat-pill {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.stat-pill span { color: var(--text2); font-weight: 600; }
+.val  { color: var(--accent4); }
+.val.g { color: var(--green); }
+.val.r { color: var(--red); }
+
+.filter-bar {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+.filter-btn {
+  padding: 0.38rem 0.9rem;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text2);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.filter-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.progress-wrap {
+  background: var(--bg3);
+  border-radius: 20px;
+  height: 7px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #c084fc);
+  border-radius: 20px;
+  transition: width 0.4s ease;
+}
+
+/* QUESTION CARD */
+.q-card {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  padding: 2rem 2.25rem;
+  max-width: 740px;
+  margin: 0 auto;
+  box-shadow: var(--shadow);
+  animation: slideUp 0.3s ease;
+}
+@keyframes slideUp {
+  from { opacity:0; transform: translateY(18px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+.q-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+.q-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.9rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+.badge-easy   { background: rgba(61,214,140,0.15);  color: var(--green); }
+.badge-medium { background: rgba(247,183,49,0.15);  color: var(--accent4); }
+.badge-hard   { background: rgba(255,107,107,0.15); color: var(--red); }
+.q-num { font-size: 0.82rem; color: var(--text3); font-weight: 700; }
+
+.q-text {
+  font-size: 1.45rem;
+  font-weight: 800;
+  line-height: 1.45;
+  margin-bottom: 1.75rem;
+  color: var(--text);
+}
+
+.answers-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+  margin-bottom: 1.25rem;
+}
+.ans-btn {
+  background: var(--bg3);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  color: var(--text);
+  font-family: 'Fira Code', monospace;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s;
+  text-align: center;
+}
+.ans-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: rgba(124,111,255,0.1);
+  transform: translateY(-2px);
+}
+.ans-btn.correct { border-color: var(--green);  background: rgba(61,214,140,0.12);  color: var(--green); }
+.ans-btn.wrong   { border-color: var(--red);    background: rgba(255,107,107,0.1);  color: var(--red); }
+.ans-btn.reveal  { border-color: var(--green);  background: rgba(61,214,140,0.07);  color: var(--green); opacity: 0.65; }
+
+.open-row {
+  display: flex;
+  gap: 0.7rem;
+  margin-bottom: 1.25rem;
+}
+.open-input {
+  flex: 1;
+  background: var(--bg3);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  color: var(--text);
+  font-family: 'Fira Code', monospace;
+  font-size: 1.1rem;
+  font-weight: 600;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.open-input:focus   { border-color: var(--accent); }
+.open-input.correct { border-color: var(--green); background: rgba(61,214,140,0.08); }
+.open-input.wrong   { border-color: var(--red);   background: rgba(255,107,107,0.08); }
+
+.check-btn, .next-btn, .skip-btn {
+  padding: 0.8rem 1.6rem;
+  border-radius: 11px;
+  border: none;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.check-btn { background: var(--accent); color: #fff; box-shadow: 0 2px 16px rgba(124,111,255,0.35); }
+.check-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 22px rgba(124,111,255,0.5); }
+.next-btn { background: var(--green); color: #072010; box-shadow: 0 2px 14px rgba(61,214,140,0.25); display: none; }
+.next-btn.show { display: inline-block; }
+.next-btn:hover { transform: translateY(-1px); }
+.skip-btn { background: transparent; border: 1px solid var(--border); color: var(--text3); font-size: 0.85rem; }
+.skip-btn:hover { border-color: var(--text2); color: var(--text2); }
+
+.feedback-box {
+  border-radius: 10px;
+  padding: 0.85rem 1.1rem;
+  font-size: 0.95rem;
+  font-weight: 800;
+  display: none;
+  margin-bottom: 1rem;
+  align-items: center;
+  gap: 0.6rem;
+  animation: popIn 0.22s ease;
+}
+@keyframes popIn {
+  from { opacity:0; transform: scale(0.96); }
+  to   { opacity:1; transform: scale(1); }
+}
+.feedback-box.show     { display: flex; }
+.feedback-box.correct-fb { background: rgba(61,214,140,0.12);  border: 1px solid var(--green); color: var(--green); }
+.feedback-box.wrong-fb   { background: rgba(255,107,107,0.1);  border: 1px solid var(--red);   color: #ff8f8f; }
+
+.actions-row {
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* RESULT */
+.result-screen {
+  display: none;
+  text-align: center;
+  padding: 3.5rem 2rem;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+  animation: slideUp 0.4s ease;
+}
+.result-screen.show { display: block; }
+.result-emoji { font-size: 4.5rem; margin-bottom: 1rem; display: block; }
+.result-score { font-size: 4rem; font-weight: 900; color: var(--accent4); line-height: 1; margin-bottom: 0.4rem; }
+.result-pct   { font-size: 1.3rem; color: var(--text2); margin-bottom: 0.4rem; }
+.result-label { font-size: 1rem; color: var(--text2); margin-bottom: 2rem; }
+.restart-btn {
+  padding: 0.9rem 2.8rem;
+  background: var(--accent);
+  border: none; border-radius: 14px;
+  color: #fff;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem; font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 2px 18px rgba(124,111,255,0.35);
+  transition: all 0.2s;
+}
+.restart-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 26px rgba(124,111,255,0.5); }
+
+/* RESPONSIVE */
+@media (max-width: 640px) {
+  .header-inner { gap: 0.75rem; }
+  .logo { font-size: 1rem; }
+  .tab-btn { padding: 0.4rem 0.9rem; font-size: 0.82rem; }
+  .q-text { font-size: 1.15rem; }
+  .answers-grid { grid-template-columns: 1fr; }
+  .rules-grid { grid-template-columns: 1fr; }
+  .def-formula { font-size: 1.4rem; }
+  .q-card { padding: 1.5rem; }
+}
 </style>
 </head>
 <body>
 
 <header>
   <div class="header-inner">
+    <a href="index.html" class="back-link">← Powrót</a>
     <div class="logo">✕² √ Potęgi i Pierwiastki</div>
     <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('teoria')">📖 Teoria</button>
-      <button class="tab-btn" onclick="switchTab('praktyka')">🎯 Ćwiczenia</button>
+      <button class="tab-btn active" onclick="switchTab('teoria', this)">📖 Teoria</button>
+      <button class="tab-btn" onclick="switchTab('praktyka', this)">🎯 Ćwiczenia</button>
     </div>
   </div>
 </header>
 
 <div class="content">
 
-  <!-- ==================== TEORIA ==================== -->
-  <div id="tab-teoria" class="tab-panel active">
-    <div class="section-title">📖 Teoria – Potęgi i Pierwiastki</div>
+<!-- ═══════════════ TEORIA ═══════════════ -->
+<div id="tab-teoria" class="tab-panel active">
 
-    <div class="theory-grid">
-
-      <!-- POTĘGA – definicja -->
-      <div class="theory-card">
-        <h2><span class="tag tag-purple">Podstawy</span> Czym jest potęga?</h2>
-        <div class="formula-block">
-          aⁿ = a · a · a · ... · a  (n razy)
-          <div class="desc">a – podstawa potęgi, n – wykładnik</div>
-        </div>
-        <div class="example-grid">
-          <div class="example-item">2³ = 8</div>
-          <div class="example-item">3⁴ = 81</div>
-          <div class="example-item">5² = 25</div>
-          <div class="example-item">10³ = 1000</div>
-        </div>
-        <div class="tip-box">
-          <strong>Uwaga:</strong> Każda liczba podniesiona do potęgi 0 równa się 1, np. 7⁰ = 1, 100⁰ = 1
-        </div>
+  <!-- 1. CO TO JEST POTĘGA -->
+  <div class="theory-section">
+    <div class="theory-section-header">
+      <div class="section-icon purple">✕²</div>
+      <div class="section-title-text">
+        <h2>Co to jest potęga?</h2>
+        <p>Podstawowa definicja i budowa potęgi</p>
       </div>
+    </div>
 
-      <!-- MNOŻENIE I DZIELENIE POTĘG -->
-      <div class="theory-card">
-        <h2><span class="tag tag-green">Działania</span> Mnożenie i dzielenie</h2>
-        <table class="rules-table">
-          <tr><th>Wzór</th><th>Postać</th><th>Przykład</th></tr>
-          <tr><td>Mnożenie (ta sama podstawa)</td><td>aᵐ · aⁿ = aᵐ⁺ⁿ</td><td>2³ · 2⁴ = 2⁷</td></tr>
-          <tr><td>Dzielenie (ta sama podstawa)</td><td>aᵐ ÷ aⁿ = aᵐ⁻ⁿ</td><td>3⁵ ÷ 3² = 3³</td></tr>
-          <tr><td>Potęga potęgi</td><td>(aᵐ)ⁿ = aᵐ·ⁿ</td><td>(2³)⁴ = 2¹²</td></tr>
-          <tr><td>Iloczyn do potęgi</td><td>(a·b)ⁿ = aⁿ · bⁿ</td><td>(2·3)⁴ = 2⁴ · 3⁴</td></tr>
-          <tr><td>Iloraz do potęgi</td><td>(a÷b)ⁿ = aⁿ ÷ bⁿ</td><td>(6÷2)³ = 6³ ÷ 2³</td></tr>
-        </table>
+    <div class="definition-box">
+      <div class="def-formula">
+        <span class="base">a</span><span class="exp">n</span>
+        <span class="arrow"> = </span>
+        <span class="result">a · a · a · ... · a</span>
+        <div style="font-size:0.9rem; color: var(--text2); margin-top:0.4rem; font-family:'Nunito',sans-serif;">(a mnożone przez siebie n razy)</div>
       </div>
-
-      <!-- POTĘGI UJEMNE -->
-      <div class="theory-card">
-        <h2><span class="tag tag-red">Wykładnik</span> Potęgi ujemne i ułamkowe</h2>
-        <div class="formula-row">
-          <div class="formula-name">Wykładnik ujemny:</div>
-          <div class="formula-math red">a⁻ⁿ = 1 / aⁿ</div>
-        </div>
-        <div class="formula-row">
-          <div class="formula-name">Przykład:</div>
-          <div class="formula-math">2⁻³ = 1/8 = 0,125</div>
-        </div>
-        <div class="formula-row">
-          <div class="formula-name">Wykładnik ½:</div>
-          <div class="formula-math green">a^(1/2) = √a</div>
-        </div>
-        <div class="formula-row">
-          <div class="formula-name">Wykładnik ⅓:</div>
-          <div class="formula-math green">a^(1/3) = ∛a</div>
-        </div>
-        <div class="tip-box">
-          <strong>Zapamiętaj:</strong> a⁻¹ = 1/a, np. 5⁻¹ = 0,2 ; a⁰ = 1 (dla a ≠ 0)
-        </div>
+      <div class="def-labels">
+        <div class="def-label"><div class="dot dot-yellow"></div><strong style="color:var(--accent4)">a</strong> – podstawa (co mnożymy)</div>
+        <div class="def-label"><div class="dot dot-red"></div><strong style="color:var(--accent2)">n</strong> – wykładnik (ile razy)</div>
+        <div class="def-label"><div class="dot dot-green"></div><strong style="color:var(--accent3)">wynik</strong> – wartość potęgi</div>
       </div>
+    </div>
 
-      <!-- PIERWIASTKI -->
-      <div class="theory-card">
-        <h2><span class="tag tag-green">Pierwiastki</span> Definicja pierwiastka</h2>
-        <div class="formula-block">
-          √a = b  ⟺  b² = a  (b ≥ 0)
-          <div class="desc">Pierwiastek kwadratowy z a to liczba b ≥ 0, której kwadrat równa się a</div>
-        </div>
-        <div class="formula-block" style="border-color: var(--accent3);">
-          ∛a = b  ⟺  b³ = a
-          <div class="desc">Pierwiastek sześcienny – wynik może być ujemny!</div>
-        </div>
-        <div class="example-grid">
-          <div class="example-item">√4 = 2</div>
-          <div class="example-item">√9 = 3</div>
-          <div class="example-item">√25 = 5</div>
-          <div class="example-item">√100 = 10</div>
-          <div class="example-item">∛8 = 2</div>
-          <div class="example-item">∛27 = 3</div>
-        </div>
+    <div class="rules-grid">
+      <div class="rule-card">
+        <div class="rule-name">Przykład podstawowy</div>
+        <div class="rule-formula">2³ = 2 · 2 · 2</div>
+        <div class="rule-example">= 8</div>
+        <div class="rule-note">Dwa mnożymy przez siebie 3 razy</div>
       </div>
-
-      <!-- DZIAŁANIA NA PIERWIASTKACH -->
-      <div class="theory-card">
-        <h2><span class="tag tag-blue">Wzory</span> Działania na pierwiastkach</h2>
-        <table class="rules-table">
-          <tr><th>Wzór</th><th>Postać</th><th>Przykład</th></tr>
-          <tr><td>Mnożenie</td><td>√a · √b = √(a·b)</td><td>√2 · √8 = √16 = 4</td></tr>
-          <tr><td>Dzielenie</td><td>√a ÷ √b = √(a÷b)</td><td>√18 ÷ √2 = √9 = 3</td></tr>
-          <tr><td>Pierwiastek z potęgi</td><td>√(aⁿ) = a^(n/2)</td><td>√(4²) = 4</td></tr>
-          <tr><td>Upraszczanie</td><td>√(a²·b) = a√b</td><td>√12 = 2√3</td></tr>
-          <tr><td>Podnoszenie do ²</td><td>(√a)² = a</td><td>(√5)² = 5</td></tr>
-        </table>
+      <div class="rule-card">
+        <div class="rule-name">Każda liczba do potęgi 0</div>
+        <div class="rule-formula">a⁰ = 1</div>
+        <div class="rule-example">7⁰ = 1,  100⁰ = 1,  999⁰ = 1</div>
+        <div class="rule-note">Wyjątek: 0⁰ jest nieokreślone!</div>
       </div>
-
-      <!-- KWADRATY LICZB -->
-      <div class="theory-card">
-        <h2><span class="tag tag-yellow">Tabliczka</span> Kwadraty liczb 1–20</h2>
-        <div class="example-grid" style="grid-template-columns: repeat(auto-fill, minmax(90px,1fr));">
-          <div class="example-item">1² = 1</div>
-          <div class="example-item">2² = 4</div>
-          <div class="example-item">3² = 9</div>
-          <div class="example-item">4² = 16</div>
-          <div class="example-item">5² = 25</div>
-          <div class="example-item">6² = 36</div>
-          <div class="example-item">7² = 49</div>
-          <div class="example-item">8² = 64</div>
-          <div class="example-item">9² = 81</div>
-          <div class="example-item">10² = 100</div>
-          <div class="example-item">11² = 121</div>
-          <div class="example-item">12² = 144</div>
-          <div class="example-item">13² = 169</div>
-          <div class="example-item">14² = 196</div>
-          <div class="example-item">15² = 225</div>
-          <div class="example-item">16² = 256</div>
-          <div class="example-item">17² = 289</div>
-          <div class="example-item">18² = 324</div>
-          <div class="example-item">19² = 361</div>
-          <div class="example-item">20² = 400</div>
-        </div>
+      <div class="rule-card">
+        <div class="rule-name">Każda liczba do potęgi 1</div>
+        <div class="rule-formula">a¹ = a</div>
+        <div class="rule-example">5¹ = 5,  13¹ = 13</div>
+        <div class="rule-note">Dowolna liczba do pierwszej potęgi = ta sama liczba</div>
       </div>
-
-      <!-- SZEŚCIANY -->
-      <div class="theory-card">
-        <h2><span class="tag tag-purple">Tabliczka</span> Sześciany i pierwiastki sześcienne</h2>
-        <div class="example-grid" style="grid-template-columns: repeat(auto-fill, minmax(110px,1fr));">
-          <div class="example-item">1³ = 1</div>
-          <div class="example-item">2³ = 8</div>
-          <div class="example-item">3³ = 27</div>
-          <div class="example-item">4³ = 64</div>
-          <div class="example-item">5³ = 125</div>
-          <div class="example-item">6³ = 216</div>
-          <div class="example-item">7³ = 343</div>
-          <div class="example-item">8³ = 512</div>
-          <div class="example-item">9³ = 729</div>
-          <div class="example-item">10³ = 1000</div>
-          <div class="example-item">∛1 = 1</div>
-          <div class="example-item">∛8 = 2</div>
-          <div class="example-item">∛27 = 3</div>
-          <div class="example-item">∛64 = 4</div>
-          <div class="example-item">∛125 = 5</div>
-          <div class="example-item">∛1000 = 10</div>
-        </div>
+      <div class="rule-card">
+        <div class="rule-name">Zero do dowolnej potęgi</div>
+        <div class="rule-formula">0ⁿ = 0  (n &gt; 0)</div>
+        <div class="rule-example">0⁵ = 0,  0¹⁰⁰ = 0</div>
+        <div class="rule-note">Zero do każdej dodatniej potęgi = 0</div>
       </div>
-
-      <!-- POTĘGI LICZBY 10 -->
-      <div class="theory-card">
-        <h2><span class="tag tag-blue">Specjalne</span> Potęgi liczby 10</h2>
-        <div class="example-grid" style="grid-template-columns: repeat(auto-fill, minmax(140px,1fr));">
-          <div class="example-item">10⁰ = 1</div>
-          <div class="example-item">10¹ = 10</div>
-          <div class="example-item">10² = 100</div>
-          <div class="example-item">10³ = 1000</div>
-          <div class="example-item">10⁴ = 10 000</div>
-          <div class="example-item">10⁵ = 100 000</div>
-          <div class="example-item">10⁶ = 1 000 000</div>
-          <div class="example-item">10⁻¹ = 0,1</div>
-          <div class="example-item">10⁻² = 0,01</div>
-          <div class="example-item">10⁻³ = 0,001</div>
-        </div>
-        <div class="tip-box">
-          <strong>Wzorzec:</strong> 10ⁿ to jedynka z n zerami. 10⁻ⁿ to 0, n-1 zer i jedynka.
-        </div>
-      </div>
-
-      <!-- SZCZEGÓLNE PRZYPADKI -->
-      <div class="theory-card full-width">
-        <h2><span class="tag tag-red">Ważne!</span> Szczególne przypadki i pułapki</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: 0.5rem;">
-          <div>
-            <div class="formula-block" style="border-color: var(--accent2);">
-              (-a)² = a²  ✓ (wynik dodatni)
-              (-3)² = 9
-              <div class="desc">Ujemna liczba do parzystej potęgi = wynik dodatni</div>
-            </div>
-          </div>
-          <div>
-            <div class="formula-block" style="border-color: var(--accent2);">
-              (-a)³ = -a³  (wynik ujemny)
-              (-3)³ = -27
-              <div class="desc">Ujemna liczba do nieparzystej potęgi = wynik ujemny</div>
-            </div>
-          </div>
-          <div>
-            <div class="formula-block" style="border-color: var(--accent4);">
-              -a²  ≠  (-a)²
-              -3² = -9,  (-3)² = 9
-              <div class="desc">Minus przed potęgą to minus przed całym wynikiem!</div>
-            </div>
-          </div>
-          <div>
-            <div class="formula-block" style="border-color: var(--accent3);">
-              √(a²) = |a|  (wartość bezwzgl.)
-              √((-3)²) = √9 = 3, nie -3
-              <div class="desc">Pierwiastek kwadratowy jest zawsze ≥ 0</div>
-            </div>
-          </div>
-          <div>
-            <div class="formula-block" style="border-color: var(--accent);">
-              0ⁿ = 0 (n > 0)
-              0⁰ – wartość nieokreślona
-              a⁰ = 1 (dla a ≠ 0)
-              <div class="desc">Zera i jedynki jako podstawy</div>
-            </div>
-          </div>
-          <div>
-            <div class="formula-block" style="border-color: var(--accent3);">
-              1ⁿ = 1  (każda potęga 1)
-              (-1)parzysta = 1
-              (-1)nieparzysta = -1
-              <div class="desc">Podstawa 1 lub -1 – specjalne zasady</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 
-  <!-- ==================== PRAKTYKA ==================== -->
-  <div id="tab-praktyka" class="tab-panel">
-    <div class="section-title">🎯 Ćwiczenia</div>
+  <div class="divider"></div>
 
-    <div class="practice-header">
-      <div class="stats-row">
-        <div class="stat-pill"><span>Pytanie:</span> <span class="val" id="stat-current">1</span> / <span class="val" id="stat-total">150</span></div>
-        <div class="stat-pill"><span>Poprawne:</span> <span class="val green" id="stat-correct">0</span></div>
-        <div class="stat-pill"><span>Błędne:</span> <span class="val red" id="stat-wrong">0</span></div>
-        <div class="stat-pill"><span>Wynik:</span> <span class="val" id="stat-pct">—</span></div>
+  <!-- 2. DZIAŁANIA NA POTĘGACH -->
+  <div class="theory-section">
+    <div class="theory-section-header">
+      <div class="section-icon green">⚡</div>
+      <div class="section-title-text">
+        <h2>Prawa działań na potęgach</h2>
+        <p>Najważniejsze wzory – musisz je znać na pamięć!</p>
       </div>
     </div>
 
-    <div class="filter-bar">
-      <button class="filter-btn active" onclick="setFilter('all', this)">🎲 Wszystkie</button>
-      <button class="filter-btn" onclick="setFilter('easy', this)">🟢 Łatwe</button>
-      <button class="filter-btn" onclick="setFilter('medium', this)">🟡 Średnie</button>
-      <button class="filter-btn" onclick="setFilter('hard', this)">🔴 Trudne</button>
-      <button class="filter-btn" onclick="setFilter('potegi', this)">✕² Potęgi</button>
-      <button class="filter-btn" onclick="setFilter('pierwiastki', this)">√ Pierwiastki</button>
-    </div>
-
-    <div class="progress-bar-wrap">
-      <div class="progress-bar-fill" id="progress-fill" style="width: 0%"></div>
-    </div>
-
-    <div id="question-area">
-      <div class="question-card" id="q-card">
-        <div class="question-meta">
-          <span class="question-badge badge-easy" id="q-badge">🟢 Łatwe</span>
-          <span class="q-number" id="q-num">#1</span>
-        </div>
-        <div class="question-text" id="q-text">Ładowanie pytania...</div>
-
-        <!-- ABCD answers (shown for multiple choice) -->
-        <div class="answers-grid" id="answers-grid"></div>
-
-        <!-- Open answer (shown for open questions) -->
-        <div class="open-answer-row" id="open-row" style="display:none;">
-          <input type="text" class="answer-input" id="open-input" placeholder="Wpisz odpowiedź..." onkeydown="if(event.key==='Enter') checkOpen()" />
-          <button class="check-btn" onclick="checkOpen()">Sprawdź</button>
-        </div>
-
-        <div class="feedback-box" id="feedback-box"></div>
-
-        <div class="actions-row">
-          <button class="next-btn" id="next-btn" onclick="loadNext()">Następne pytanie →</button>
-          <button class="skip-btn" onclick="skipQuestion()">Pomiń</button>
-        </div>
+    <div class="rules-grid">
+      <div class="rule-card">
+        <div class="rule-name">🔹 Mnożenie – ta sama podstawa</div>
+        <div class="rule-formula">aᵐ · aⁿ = aᵐ⁺ⁿ</div>
+        <div class="rule-example">2³ · 2⁴ = 2⁷ = 128</div>
+        <div class="rule-note">Podstawy muszą być takie same. Wykładniki dodajemy!</div>
       </div>
-
-      <!-- RESULT SCREEN -->
-      <div class="result-screen" id="result-screen">
-        <span class="result-emoji" id="result-emoji">🎉</span>
-        <div class="result-score" id="result-score">0/0</div>
-        <div class="result-label" id="result-label">Ukończyłeś wszystkie pytania!</div>
-        <button class="restart-btn" onclick="restartQuiz()">🔄 Zacznij od nowa</button>
+      <div class="rule-card">
+        <div class="rule-name">🔹 Dzielenie – ta sama podstawa</div>
+        <div class="rule-formula">aᵐ ÷ aⁿ = aᵐ⁻ⁿ</div>
+        <div class="rule-example">3⁵ ÷ 3² = 3³ = 27</div>
+        <div class="rule-note">Podstawy takie same. Wykładniki odejmujemy!</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-name">🔹 Potęga potęgi</div>
+        <div class="rule-formula">(aᵐ)ⁿ = aᵐ·ⁿ</div>
+        <div class="rule-example">(2³)⁴ = 2¹² = 4096</div>
+        <div class="rule-note">Potęga do potęgi – wykładniki mnożymy!</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-name">🔹 Iloczyn do potęgi</div>
+        <div class="rule-formula">(a · b)ⁿ = aⁿ · bⁿ</div>
+        <div class="rule-example">(2 · 3)⁴ = 2⁴ · 3⁴ = 16 · 81</div>
+        <div class="rule-note">Każdy czynnik podnosimy osobno do tej potęgi</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-name">🔹 Iloraz do potęgi</div>
+        <div class="rule-formula">(a ÷ b)ⁿ = aⁿ ÷ bⁿ</div>
+        <div class="rule-example">(6 ÷ 2)³ = 6³ ÷ 2³ = 216 ÷ 8 = 27</div>
+        <div class="rule-note">Licznik i mianownik podnosimy osobno</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-name">🔹 Różne podstawy – ta sama potęga</div>
+        <div class="rule-formula">aⁿ · bⁿ = (a · b)ⁿ</div>
+        <div class="rule-example">2³ · 5³ = 10³ = 1000</div>
+        <div class="rule-note">To odwrotność reguły iloczynu do potęgi</div>
       </div>
     </div>
 
+    <div class="info-band" style="margin-top:1rem;">
+      ⚠️ <strong>Uwaga!</strong> Wzory z mnożeniem/dzieleniem działają tylko gdy podstawy są takie same (np. 2³ · 2⁴) LUB gdy wykładniki są takie same (np. 2³ · 5³). Nie możesz tak uprościć np. 2³ · 3⁴!
+    </div>
   </div>
-</div>
+
+  <div class="divider"></div>
+
+  <!-- 3. WYKŁADNIKI UJEMNE I UŁAMKOWE -->
+  <div class="theory-section">
+    <div class="theory-section-header">
+      <div class="section-icon red">⁻¹</div>
+      <div class="section-title-text">
+        <h2>Wykładniki ujemne i ułamkowe</h2>
+        <p>Potęgi które „odwracają" lub „pierwiastkują"</p>
+      </div>
+    </div>
+
+    <div class="rules-grid">
+      <div class="rule-card">
+        <div class="rule-name">Wykładnik ujemny</div>
+        <div class="rule-formula">a⁻ⁿ = 1 / aⁿ</div>
+        <div class="rule-example">2⁻³ = 1/2³ = 1/8 = 0,125</div>
+        <div class="rule-note">Ujemny wykładnik = odwróć ułamek! Podstawa idzie „do mianownika".</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-name">Wykładnik −1</div>
+        <div class="rule-formula">a⁻¹ = 1/a</div>
+        <div class="rule-example">5⁻¹ = 0,2 &nbsp; 4⁻¹ = 0,25 &nbsp; 10⁻¹ = 0,1</div>
+        <div class="rule-note">Odwrotność danej liczby</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-name">Wykładnik ½ = pierwiastek</div>
+        <div class="rule-formula">a^(1/2) = √a</div>
+        <div class="rule-example">9^(1/2) = √9 = 3</div>
+        <div class="rule-note">Połowa wykładnika = pierwiastek kwadratowy</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-name">Wykładnik ⅓ = sześcienny</div>
+        <div class="rule-formula">a^(1/3) = ∛a</div>
+        <div class="rule-example">27^(1/3) = ∛27 = 3</div>
+        <div class="rule-note">Jedna trzecia wykładnika = pierwiastek sześcienny</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-name">Ułamkowy wykładnik ogólnie</div>
+        <div class="rule-formula">a^(m/n) = ⁿ√(aᵐ)</div>
+        <div class="rule-example">8^(2/3) = ∛(8²) = ∛64 = 4</div>
+        <div class="rule-note">Licznik = potęga, mianownik = stopień pierwiastka</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-name">Potęgi dziesiętne (10⁻ⁿ)</div>
+        <div class="rule-formula">10⁻ⁿ = 0,00...01</div>
+        <div class="rule-example">10⁻¹=0,1 &nbsp; 10⁻²=0,01 &nbsp; 10⁻³=0,001</div>
+        <div class="rule-note">n-ta potęga ujemna liczby 10 = n miejsc po przecinku</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 4. UJEMNA PODSTAWA -->
+  <div class="theory-section">
+    <div class="theory-section-header">
+      <div class="section-icon red">−a</div>
+      <div class="section-title-text">
+        <h2>Potęgi z ujemną podstawą</h2>
+        <p>Tu najczęściej są błędy na sprawdzianie!</p>
+      </div>
+    </div>
+
+    <div class="traps-grid">
+      <div class="trap-card ok">
+        <div class="trap-label ok">✅ Parzysta potęga = PLUS</div>
+        <div class="trap-formula">(-3)² = (-3) · (-3) = <strong style="color:var(--green)">+9</strong></div>
+        <div class="trap-formula">(-2)⁴ = <strong style="color:var(--green)">+16</strong></div>
+        <div class="trap-desc">Ujemna liczba do parzystej potęgi zawsze daje wynik DODATNI.</div>
+      </div>
+      <div class="trap-card danger">
+        <div class="trap-label danger">⚠️ Nieparzysta potęga = MINUS</div>
+        <div class="trap-formula">(-3)³ = (-3)·(-3)·(-3) = <strong style="color:var(--red)">−27</strong></div>
+        <div class="trap-formula">(-2)⁵ = <strong style="color:var(--red)">−32</strong></div>
+        <div class="trap-desc">Ujemna liczba do nieparzystej potęgi zawsze daje wynik UJEMNY.</div>
+      </div>
+      <div class="trap-card warn">
+        <div class="trap-label warn">🚨 PUŁAPKA: −a² to nie (−a)²!</div>
+        <div class="trap-formula">−3² = −(3·3) = <strong style="color:var(--red)">−9</strong></div>
+        <div class="trap-formula">(−3)² = (−3)·(−3) = <strong style="color:var(--green)">+9</strong></div>
+        <div class="trap-desc">Minus BEZ nawiasu należy do całego wyrażenia, nie do podstawy!</div>
+      </div>
+      <div class="trap-card info">
+        <div class="trap-label info">ℹ️ Jedynka i minus jedynka</div>
+        <div class="trap-formula">1ⁿ = 1 (zawsze)</div>
+        <div class="trap-formula">(−1)parzyste = 1 &nbsp;|&nbsp; (−1)nieparzyste = −1</div>
+        <div class="trap-desc">Zapamiętaj: (−1)¹⁰⁰ = 1, (−1)⁹⁹ = −1</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 5. PIERWIASTKI -->
+  <div class="theory-section">
+    <div class="theory-section-header">
+      <div class="section-icon green">√</div>
+      <div class="section-title-text">
+        <h2>Pierwiastki – definicja i działania</h2>
+        <p>Pierwiastek odwraca potęgowanie</p>
+      </div>
+    </div>
+
+    <div class="definition-box">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+        <div>
+          <div style="font-size:0.8rem; color:var(--text2); font-weight:800; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.5rem;">Pierwiastek kwadratowy</div>
+          <div class="def-formula" style="font-size:1.6rem;">√a = b  ⟺  b² = a</div>
+          <div style="font-size:0.85rem; color:var(--text2); margin-top:0.5rem;">Wynik zawsze ≥ 0. Np. √9 = 3 (nie −3!)</div>
+        </div>
+        <div>
+          <div style="font-size:0.8rem; color:var(--text2); font-weight:800; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.5rem;">Pierwiastek sześcienny</div>
+          <div class="def-formula" style="font-size:1.6rem; border-color:rgba(61,214,140,0.3);">∛a = b  ⟺  b³ = a</div>
+          <div style="font-size:0.85rem; color:var(--text2); margin-top:0.5rem;">Wynik może być ujemny! Np. ∛(−8) = −2</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rules-grid" style="margin-top:0.75rem;">
+      <div class="rule-card">
+        <div class="rule-name">Mnożenie pierwiastków</div>
+        <div class="rule-formula">√a · √b = √(a · b)</div>
+        <div class="rule-example">√2 · √8 = √16 = 4</div>
+        <div class="rule-note">Pierwiastki tego samego stopnia można połączyć</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-name">Dzielenie pierwiastków</div>
+        <div class="rule-formula">√a ÷ √b = √(a ÷ b)</div>
+        <div class="rule-example">√18 ÷ √2 = √9 = 3</div>
+        <div class="rule-note">Podobnie jak mnożenie, ale dzielimy pod pierwiastkiem</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-name">Upraszczanie pierwiastka</div>
+        <div class="rule-formula">√(a²·b) = a·√b</div>
+        <div class="rule-example">√12 = √(4·3) = 2√3</div>
+        <div class="rule-note">Wyciągamy pełne kwadraty przed pierwiastek</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-name">Pierwiastek z kwadratu</div>
+        <div class="rule-formula">√(a²) = |a|</div>
+        <div class="rule-example">√((-5)²) = √25 = 5, nie −5!</div>
+        <div class="rule-note">Pierwiastek kwadratowy ZAWSZE jest nieujemny</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-name">Podniesienie do kwadratu</div>
+        <div class="rule-formula">(√a)² = a</div>
+        <div class="rule-example">(√7)² = 7 &nbsp; (√13)² = 13</div>
+        <div class="rule-note">Kwadrat pierwiastka „znosi" pierwiastek</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-name">Brak pierwiastka z ujemnej</div>
+        <div class="rule-formula">√(−a) = brak w ℝ</div>
+        <div class="rule-example">√(−4) – nie istnieje w liczbach rzeczywistych</div>
+        <div class="rule-note">Nie da się wyciągnąć √ z liczby ujemnej (w szkole podstawowej)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 6. TABLICZKI -->
+  <div class="theory-section">
+    <div class="theory-section-header">
+      <div class="section-icon yellow">📋</div>
+      <div class="section-title-text">
+        <h2>Tabliczki do zapamiętania</h2>
+        <p>Kliknij kartę żeby podświetlić</p>
+      </div>
+    </div>
+
+    <div style="font-size:0.8rem; color:var(--text2); font-weight:800; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.6rem;">Kwadraty liczb 1–20</div>
+    <div class="table-grid" style="margin-bottom:1.25rem;">
+      <div class="table-item" onclick="this.style.borderColor='var(--accent)'"><div class="base-n">1²</div><div class="val-n">1</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--accent)'"><div class="base-n">2²</div><div class="val-n">4</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--accent)'"><div class="base-n">3²</div><div class="val-n">9</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--accent)'"><div class="base-n">4²</div><div class="val-n">16</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--accent)'"><div class="base-n">5²</div><div class="val-n">25</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--accent)'"><div class="base-n">6²</div><div class="val-n">36</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--accent)'"><div class="base-n">7²</div><div class="val-n">49</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--accent)'"><div class="base-n">8²</div><div class="val-n">64</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--accent)'"><div class="base-n">9²</div><div class="val-n">81</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--accent)'"><div class="base-n">10²</div><div class="val-n">100</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--accent)'"><div class="base-n">11²</div><div class="val-n">121</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--accent)'"><div class="base-n">12²</div><div class="val-n">144</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--accent)'"><div class="base-n">13²</div><div class="val-n">169</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--accent)'"><div class="base-n">14²</div><div class="val-n">196</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--accent)'"><div class="base-n">15²</div><div class="val-n">225</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--accent)'"><div class="base-n">16²</div><div class="val-n">256</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--accent)'"><div class="base-n">17²</div><div class="val-n">289</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--accent)'"><div class="base-n">18²</div><div class="val-n">324</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--accent)'"><div class="base-n">19²</div><div class="val-n">361</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--accent)'"><div class="base-n">20²</div><div class="val-n">400</div></div>
+    </div>
+
+    <div style="font-size:0.8rem; color:var(--text2); font-weight:800; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.6rem;">Sześciany i pierwiastki sześcienne</div>
+    <div class="table-grid" style="grid-template-columns: repeat(auto-fill, minmax(120px,1fr)); margin-bottom:1.25rem;">
+      <div class="table-item" onclick="this.style.borderColor='var(--pink)'"><div class="base-n">1³ / ∛1</div><div class="val-n" style="color:var(--pink)">1</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--pink)'"><div class="base-n">2³ / ∛8</div><div class="val-n" style="color:var(--pink)">8</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--pink)'"><div class="base-n">3³ / ∛27</div><div class="val-n" style="color:var(--pink)">27</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--pink)'"><div class="base-n">4³ / ∛64</div><div class="val-n" style="color:var(--pink)">64</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--pink)'"><div class="base-n">5³ / ∛125</div><div class="val-n" style="color:var(--pink)">125</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--pink)'"><div class="base-n">6³ / ∛216</div><div class="val-n" style="color:var(--pink)">216</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--pink)'"><div class="base-n">7³ / ∛343</div><div class="val-n" style="color:var(--pink)">343</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--pink)'"><div class="base-n">8³ / ∛512</div><div class="val-n" style="color:var(--pink)">512</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--pink)'"><div class="base-n">9³ / ∛729</div><div class="val-n" style="color:var(--pink)">729</div></div>
+      <div class="table-item" onclick="this.style.borderColor='var(--pink)'"><div class="base-n">10³ / ∛1000</div><div class="val-n" style="color:var(--pink)">1000</div></div>
+    </div>
+
+    <div style="font-size:0.8rem; color:var(--text2); font-weight:800; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.6rem;">Potęgi liczby 10</div>
+    <div class="table-grid" style="grid-template-columns: repeat(auto-fill, minmax(140px,1fr));">
+      <div class="table-item"><div class="base-n">10⁰</div><div class="val-n" style="color:var(--accent4)">1</div></div>
+      <div class="table-item"><div class="base-n">10¹</div><div class="val-n" style="color:var(--accent4)">10</div></div>
+      <div class="table-item"><div class="base-n">10²</div><div class="val-n" style="color:var(--accent4)">100</div></div>
+      <div class="table-item"><div class="base-n">10³</div><div class="val-n" style="color:var(--accent4)">1 000</div></div>
+      <div class="table-item"><div class="base-n">10⁴</div><div class="val-n" style="color:var(--accent4)">10 000</div></div>
+      <div class="table-item"><div class="base-n">10⁵</div><div class="val-n" style="color:var(--accent4)">100 000</div></div>
+      <div class="table-item"><div class="base-n">10⁶</div><div class="val-n" style="color:var(--accent4)">1 000 000</div></div>
+      <div class="table-item"><div class="base-n">10⁻¹</div><div class="val-n" style="color:var(--accent2)">0,1</div></div>
+      <div class="table-item"><div class="base-n">10⁻²</div><div class="val-n" style="color:var(--accent2)">0,01</div></div>
+      <div class="table-item"><div class="base-n">10⁻³</div><div class="val-n" style="color:var(--accent2)">0,001</div></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 7. JAK ROZWIĄZYWAĆ – KROK PO KROKU -->
+  <div class="theory-section">
+    <div class="theory-section-header">
+      <div class="section-icon blue">🧩</div>
+      <div class="section-title-text">
+        <h2>Jak rozwiązywać zadania – krok po kroku</h2>
+        <p>Gotowe przepisy na typowe zadania</p>
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px,1fr)); gap:0.75rem;">
+      <div class="steps-card">
+        <div class="steps-title">📌 Upraszczanie iloczynu potęg (np. 2³ · 2⁴)</div>
+        <div class="steps-list">
+          <div class="step-row"><div class="step-num">1</div><div class="step-text">Sprawdź czy <strong>podstawy są takie same</strong> (tu: obie 2) ✓</div></div>
+          <div class="step-row"><div class="step-num">2</div><div class="step-text"><strong>Dodaj wykładniki:</strong> <code>3 + 4 = 7</code></div></div>
+          <div class="step-row"><div class="step-num">3</div><div class="step-text">Wynik: <code>2⁷ = 128</code></div></div>
+        </div>
+      </div>
+      <div class="steps-card">
+        <div class="steps-title">📌 Upraszczanie pierwiastka (np. √72)</div>
+        <div class="steps-list">
+          <div class="step-row"><div class="step-num">1</div><div class="step-text">Rozłóż na czynniki z <strong>pełnym kwadratem:</strong> <code>72 = 36 · 2</code></div></div>
+          <div class="step-row"><div class="step-num">2</div><div class="step-text">Rozdziel: <code>√(36 · 2) = √36 · √2</code></div></div>
+          <div class="step-row"><div class="step-num">3</div><div class="step-text">Oblicz: <code>√36 = 6</code>, wynik: <code>6√2</code></div></div>
+        </div>
+      </div>
+      <div class="steps-card">
+        <div class="steps-title">📌 Potęga ułamkowa (np. 27^(2/3))</div>
+        <div class="steps-list">
+          <div class="step-row"><div class="step-num">1</div><div class="step-text">Mianownik = stopień pierwiastka: <code>∛27</code></div></div>
+          <div class="step-row"><div class="step-num">2</div><div class="step-text">Oblicz pierwiastek: <code>∛27 = 3</code></div></div>
+          <div class="step-row"><div class="step-num">3</div><div class="step-text">Podnieś do licznika: <code>3² = 9</code></div></div>
+        </div>
+      </div>
+      <div class="steps-card">
+        <div class="steps-title">📌 Potęga ujemna (np. 2⁻⁴)</div>
+        <div class="steps-list">
+          <div class="step-row"><div class="step-num">1</div><div class="step-text">Ujemny wykładnik = <strong>odwrotność</strong></div></div>
+          <div class="step-row"><div class="step-num">2</div><div class="step-text">Zapisz: <code>2⁻⁴ = 1/2⁴</code></div></div>
+          <div class="step-row"><div class="step-num">3</div><div class="step-text">Oblicz: <code>1/16 = 0,0625</code></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /tab-teoria -->
+
+<!-- ═══════════════ PRAKTYKA ═══════════════ -->
+<div id="tab-praktyka" class="tab-panel">
+
+  <div class="practice-top">
+    <div class="stats-row">
+      <div class="stat-pill"><span>Pytanie:</span><span class="val" id="stat-cur">1</span>/<span class="val" id="stat-tot">200</span></div>
+      <div class="stat-pill"><span>✅</span><span class="val g" id="stat-ok">0</span></div>
+      <div class="stat-pill"><span>❌</span><span class="val r" id="stat-err">0</span></div>
+      <div class="stat-pill"><span>Wynik:</span><span class="val" id="stat-pct">—</span></div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="setFilter('all',this)">🎲 Wszystkie</button>
+    <button class="filter-btn" onclick="setFilter('easy',this)">🟢 Łatwe</button>
+    <button class="filter-btn" onclick="setFilter('medium',this)">🟡 Średnie</button>
+    <button class="filter-btn" onclick="setFilter('hard',this)">🔴 Trudne</button>
+    <button class="filter-btn" onclick="setFilter('potegi',this)">✕² Potęgi</button>
+    <button class="filter-btn" onclick="setFilter('pierwiastki',this)">√ Pierwiastki</button>
+  </div>
+
+  <div class="progress-wrap"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+
+  <div id="q-area">
+    <div class="q-card" id="q-card">
+      <div class="q-meta">
+        <span class="q-badge badge-easy" id="q-badge">🟢 Łatwe</span>
+        <span class="q-num" id="q-num">#1</span>
+      </div>
+      <div class="q-text" id="q-text">Ładowanie...</div>
+      <div class="answers-grid" id="ans-grid"></div>
+      <div class="open-row" id="open-row" style="display:none">
+        <input class="open-input" id="open-inp" placeholder="Wpisz odpowiedź..." onkeydown="if(event.key==='Enter')checkOpen()">
+        <button class="check-btn" onclick="checkOpen()">Sprawdź</button>
+      </div>
+      <div class="feedback-box" id="fb"></div>
+      <div class="actions-row">
+        <button class="next-btn" id="next-btn" onclick="loadNext()">Następne →</button>
+        <button class="skip-btn" onclick="skip()">Pomiń</button>
+      </div>
+    </div>
+
+    <div class="result-screen" id="result">
+      <span class="result-emoji" id="r-emoji">🎉</span>
+      <div class="result-score" id="r-score">0/0</div>
+      <div class="result-pct"  id="r-pct">0%</div>
+      <div class="result-label" id="r-label">Ukończyłeś sesję!</div>
+      <button class="restart-btn" onclick="restart()">🔄 Zacznij od nowa</button>
+    </div>
+  </div>
+
+</div><!-- /tab-praktyka -->
+</div><!-- /content -->
 
 <script>
-// ===================== ALL 150 QUESTIONS =====================
-const ALL_QUESTIONS = [
-  // ---------- ŁATWE – POTĘGI (1-40) ----------
-  {id:1, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 2²', a:'4'},
-  {id:2, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 3²', a:'9'},
-  {id:3, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 4²', a:'16'},
-  {id:4, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 5²', a:'25'},
-  {id:5, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 6²', a:'36'},
-  {id:6, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 7²', a:'49'},
-  {id:7, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 8²', a:'64'},
-  {id:8, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 9²', a:'81'},
-  {id:9, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 10²', a:'100'},
-  {id:10, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 2³', a:'8'},
-  {id:11, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 3³', a:'27'},
-  {id:12, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 4³', a:'64'},
-  {id:13, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 5³', a:'125'},
-  {id:14, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 10³', a:'1000'},
-  {id:15, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 2⁴', a:'16'},
-  {id:16, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 2⁵', a:'32'},
-  {id:17, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 2⁶', a:'64'},
-  {id:18, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 10⁴', a:'10000'},
-  {id:19, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 1⁵⁰', a:'1'},
-  {id:20, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 7⁰', a:'1'},
-  {id:21, diff:'easy', cat:'potegi', type:'mc', q:'Co to jest podstawa w wyrażeniu 5³?', correct:'5', wrong:['3','15','125']},
-  {id:22, diff:'easy', cat:'potegi', type:'mc', q:'Co to jest wykładnik w wyrażeniu 4⁶?', correct:'6', wrong:['4','24','4096']},
-  {id:23, diff:'easy', cat:'potegi', type:'mc', q:'Ile wynosi 0⁵?', correct:'0', wrong:['1','5','undef']},
-  {id:24, diff:'easy', cat:'potegi', type:'mc', q:'Ile wynosi 100²?', correct:'10000', wrong:['200','1000','10200']},
-  {id:25, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 11²', a:'121'},
-  {id:26, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 12²', a:'144'},
-  {id:27, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 13²', a:'169'},
-  {id:28, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 15²', a:'225'},
-  {id:29, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 20²', a:'400'},
-  {id:30, diff:'easy', cat:'potegi', type:'mc', q:'Ile wynosi 6³?', correct:'216', wrong:['18','180','116']},
-  {id:31, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 2⁷', a:'128'},
-  {id:32, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 2⁸', a:'256'},
-  {id:33, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 10⁵', a:'100000'},
-  {id:34, diff:'easy', cat:'potegi', type:'mc', q:'Ile wynosi 3⁴?', correct:'81', wrong:['12','27','64']},
-  {id:35, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 4⁴', a:'256'},
-  {id:36, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 1⁰', a:'1'},
-  {id:37, diff:'easy', cat:'potegi', type:'mc', q:'Ile wynosi 5⁴?', correct:'625', wrong:['100','125','500']},
-  {id:38, diff:'easy', cat:'potegi', type:'open', q:'Ile zer ma liczba 10⁶?', a:'6'},
-  {id:39, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 9²', a:'81'},
-  {id:40, diff:'easy', cat:'potegi', type:'open', q:'Oblicz: 2¹⁰', a:'1024'},
+const Q = [
+  // ── ŁATWE – POTĘGI ──
+  {id:1,  d:'easy', c:'potegi', t:'open', q:'Oblicz: 2²',   a:'4'},
+  {id:2,  d:'easy', c:'potegi', t:'open', q:'Oblicz: 3²',   a:'9'},
+  {id:3,  d:'easy', c:'potegi', t:'open', q:'Oblicz: 4²',   a:'16'},
+  {id:4,  d:'easy', c:'potegi', t:'open', q:'Oblicz: 5²',   a:'25'},
+  {id:5,  d:'easy', c:'potegi', t:'open', q:'Oblicz: 6²',   a:'36'},
+  {id:6,  d:'easy', c:'potegi', t:'open', q:'Oblicz: 7²',   a:'49'},
+  {id:7,  d:'easy', c:'potegi', t:'open', q:'Oblicz: 8²',   a:'64'},
+  {id:8,  d:'easy', c:'potegi', t:'open', q:'Oblicz: 9²',   a:'81'},
+  {id:9,  d:'easy', c:'potegi', t:'open', q:'Oblicz: 10²',  a:'100'},
+  {id:10, d:'easy', c:'potegi', t:'open', q:'Oblicz: 11²',  a:'121'},
+  {id:11, d:'easy', c:'potegi', t:'open', q:'Oblicz: 12²',  a:'144'},
+  {id:12, d:'easy', c:'potegi', t:'open', q:'Oblicz: 13²',  a:'169'},
+  {id:13, d:'easy', c:'potegi', t:'open', q:'Oblicz: 15²',  a:'225'},
+  {id:14, d:'easy', c:'potegi', t:'open', q:'Oblicz: 20²',  a:'400'},
+  {id:15, d:'easy', c:'potegi', t:'open', q:'Oblicz: 2³',   a:'8'},
+  {id:16, d:'easy', c:'potegi', t:'open', q:'Oblicz: 3³',   a:'27'},
+  {id:17, d:'easy', c:'potegi', t:'open', q:'Oblicz: 4³',   a:'64'},
+  {id:18, d:'easy', c:'potegi', t:'open', q:'Oblicz: 5³',   a:'125'},
+  {id:19, d:'easy', c:'potegi', t:'open', q:'Oblicz: 10³',  a:'1000'},
+  {id:20, d:'easy', c:'potegi', t:'open', q:'Oblicz: 2⁴',   a:'16'},
+  {id:21, d:'easy', c:'potegi', t:'open', q:'Oblicz: 2⁵',   a:'32'},
+  {id:22, d:'easy', c:'potegi', t:'open', q:'Oblicz: 2⁶',   a:'64'},
+  {id:23, d:'easy', c:'potegi', t:'open', q:'Oblicz: 2⁷',   a:'128'},
+  {id:24, d:'easy', c:'potegi', t:'open', q:'Oblicz: 2⁸',   a:'256'},
+  {id:25, d:'easy', c:'potegi', t:'open', q:'Oblicz: 2¹⁰',  a:'1024'},
+  {id:26, d:'easy', c:'potegi', t:'open', q:'Oblicz: 10⁴',  a:'10000'},
+  {id:27, d:'easy', c:'potegi', t:'open', q:'Oblicz: 10⁵',  a:'100000'},
+  {id:28, d:'easy', c:'potegi', t:'open', q:'Oblicz: 7⁰',   a:'1'},
+  {id:29, d:'easy', c:'potegi', t:'open', q:'Oblicz: 1⁵⁰',  a:'1'},
+  {id:30, d:'easy', c:'potegi', t:'open', q:'Oblicz: 4⁴',   a:'256'},
+  {id:31, d:'easy', c:'potegi', t:'mc',   q:'Co to jest podstawa w wyrażeniu 5³?', correct:'5', wrong:['3','15','125']},
+  {id:32, d:'easy', c:'potegi', t:'mc',   q:'Co to jest wykładnik w wyrażeniu 4⁶?', correct:'6', wrong:['4','24','4096']},
+  {id:33, d:'easy', c:'potegi', t:'mc',   q:'Ile wynosi 0⁵?', correct:'0', wrong:['1','5','∞']},
+  {id:34, d:'easy', c:'potegi', t:'mc',   q:'Ile wynosi 100²?', correct:'10000', wrong:['200','1000','10200']},
+  {id:35, d:'easy', c:'potegi', t:'mc',   q:'Ile wynosi 6³?', correct:'216', wrong:['18','180','116']},
+  {id:36, d:'easy', c:'potegi', t:'mc',   q:'Ile wynosi 3⁴?', correct:'81', wrong:['12','27','64']},
+  {id:37, d:'easy', c:'potegi', t:'mc',   q:'Ile wynosi 5⁴?', correct:'625', wrong:['100','125','500']},
+  {id:38, d:'easy', c:'potegi', t:'open', q:'Ile zer ma liczba 10⁶?', a:'6'},
+  {id:39, d:'easy', c:'potegi', t:'open', q:'Oblicz: 1⁰',   a:'1'},
+  {id:40, d:'easy', c:'potegi', t:'open', q:'Oblicz: 14²',  a:'196'},
 
-  // ---------- ŁATWE – PIERWIASTKI (41-60) ----------
-  {id:41, diff:'easy', cat:'pierwiastki', type:'open', q:'Oblicz: √4', a:'2'},
-  {id:42, diff:'easy', cat:'pierwiastki', type:'open', q:'Oblicz: √9', a:'3'},
-  {id:43, diff:'easy', cat:'pierwiastki', type:'open', q:'Oblicz: √16', a:'4'},
-  {id:44, diff:'easy', cat:'pierwiastki', type:'open', q:'Oblicz: √25', a:'5'},
-  {id:45, diff:'easy', cat:'pierwiastki', type:'open', q:'Oblicz: √36', a:'6'},
-  {id:46, diff:'easy', cat:'pierwiastki', type:'open', q:'Oblicz: √49', a:'7'},
-  {id:47, diff:'easy', cat:'pierwiastki', type:'open', q:'Oblicz: √64', a:'8'},
-  {id:48, diff:'easy', cat:'pierwiastki', type:'open', q:'Oblicz: √81', a:'9'},
-  {id:49, diff:'easy', cat:'pierwiastki', type:'open', q:'Oblicz: √100', a:'10'},
-  {id:50, diff:'easy', cat:'pierwiastki', type:'open', q:'Oblicz: √121', a:'11'},
-  {id:51, diff:'easy', cat:'pierwiastki', type:'open', q:'Oblicz: √144', a:'12'},
-  {id:52, diff:'easy', cat:'pierwiastki', type:'open', q:'Oblicz: √225', a:'15'},
-  {id:53, diff:'easy', cat:'pierwiastki', type:'open', q:'Oblicz: √400', a:'20'},
-  {id:54, diff:'easy', cat:'pierwiastki', type:'open', q:'Oblicz: ∛8', a:'2'},
-  {id:55, diff:'easy', cat:'pierwiastki', type:'open', q:'Oblicz: ∛27', a:'3'},
-  {id:56, diff:'easy', cat:'pierwiastki', type:'open', q:'Oblicz: ∛64', a:'4'},
-  {id:57, diff:'easy', cat:'pierwiastki', type:'open', q:'Oblicz: ∛125', a:'5'},
-  {id:58, diff:'easy', cat:'pierwiastki', type:'open', q:'Oblicz: ∛1000', a:'10'},
-  {id:59, diff:'easy', cat:'pierwiastki', type:'mc', q:'Ile wynosi (√7)²?', correct:'7', wrong:['14','49','√7']},
-  {id:60, diff:'easy', cat:'pierwiastki', type:'open', q:'Oblicz: √1', a:'1'},
+  // ── ŁATWE – PIERWIASTKI ──
+  {id:41, d:'easy', c:'pierwiastki', t:'open', q:'Oblicz: √4',    a:'2'},
+  {id:42, d:'easy', c:'pierwiastki', t:'open', q:'Oblicz: √9',    a:'3'},
+  {id:43, d:'easy', c:'pierwiastki', t:'open', q:'Oblicz: √16',   a:'4'},
+  {id:44, d:'easy', c:'pierwiastki', t:'open', q:'Oblicz: √25',   a:'5'},
+  {id:45, d:'easy', c:'pierwiastki', t:'open', q:'Oblicz: √36',   a:'6'},
+  {id:46, d:'easy', c:'pierwiastki', t:'open', q:'Oblicz: √49',   a:'7'},
+  {id:47, d:'easy', c:'pierwiastki', t:'open', q:'Oblicz: √64',   a:'8'},
+  {id:48, d:'easy', c:'pierwiastki', t:'open', q:'Oblicz: √81',   a:'9'},
+  {id:49, d:'easy', c:'pierwiastki', t:'open', q:'Oblicz: √100',  a:'10'},
+  {id:50, d:'easy', c:'pierwiastki', t:'open', q:'Oblicz: √121',  a:'11'},
+  {id:51, d:'easy', c:'pierwiastki', t:'open', q:'Oblicz: √144',  a:'12'},
+  {id:52, d:'easy', c:'pierwiastki', t:'open', q:'Oblicz: √169',  a:'13'},
+  {id:53, d:'easy', c:'pierwiastki', t:'open', q:'Oblicz: √196',  a:'14'},
+  {id:54, d:'easy', c:'pierwiastki', t:'open', q:'Oblicz: √225',  a:'15'},
+  {id:55, d:'easy', c:'pierwiastki', t:'open', q:'Oblicz: √256',  a:'16'},
+  {id:56, d:'easy', c:'pierwiastki', t:'open', q:'Oblicz: √400',  a:'20'},
+  {id:57, d:'easy', c:'pierwiastki', t:'open', q:'Oblicz: √1',    a:'1'},
+  {id:58, d:'easy', c:'pierwiastki', t:'open', q:'Oblicz: ∛8',    a:'2'},
+  {id:59, d:'easy', c:'pierwiastki', t:'open', q:'Oblicz: ∛27',   a:'3'},
+  {id:60, d:'easy', c:'pierwiastki', t:'open', q:'Oblicz: ∛64',   a:'4'},
+  {id:61, d:'easy', c:'pierwiastki', t:'open', q:'Oblicz: ∛125',  a:'5'},
+  {id:62, d:'easy', c:'pierwiastki', t:'open', q:'Oblicz: ∛1000', a:'10'},
+  {id:63, d:'easy', c:'pierwiastki', t:'mc',   q:'Ile wynosi (√7)²?', correct:'7', wrong:['14','49','√7']},
+  {id:64, d:'easy', c:'pierwiastki', t:'mc',   q:'Czy √25 = 5 czy −5?', correct:'5', wrong:['-5','±5','25']},
+  {id:65, d:'easy', c:'pierwiastki', t:'open', q:'Oblicz: √289',  a:'17'},
 
-  // ---------- ŚREDNIE – POTĘGI (61-100) ----------
-  {id:61, diff:'medium', cat:'potegi', type:'open', q:'Uprość: 2³ · 2⁴ (wynik to 2 do jakiej potęgi?)', a:'7'},
-  {id:62, diff:'medium', cat:'potegi', type:'open', q:'Uprość: 3⁵ ÷ 3² (wynik to 3 do jakiej potęgi?)', a:'3'},
-  {id:63, diff:'medium', cat:'potegi', type:'mc', q:'Ile wynosi (2³)²?', correct:'64', wrong:['32','12','128']},
-  {id:64, diff:'medium', cat:'potegi', type:'mc', q:'Ile wynosi (3²)³?', correct:'729', wrong:['216','243','81']},
-  {id:65, diff:'medium', cat:'potegi', type:'open', q:'Ile wynosi (-3)²?', a:'9'},
-  {id:66, diff:'medium', cat:'potegi', type:'open', q:'Ile wynosi (-2)³?', a:'-8'},
-  {id:67, diff:'medium', cat:'potegi', type:'open', q:'Ile wynosi (-5)²?', a:'25'},
-  {id:68, diff:'medium', cat:'potegi', type:'open', q:'Ile wynosi (-1)¹⁰⁰?', a:'1'},
-  {id:69, diff:'medium', cat:'potegi', type:'open', q:'Ile wynosi (-1)⁷?', a:'-1'},
-  {id:70, diff:'medium', cat:'potegi', type:'mc', q:'Ile wynosi -3²?', correct:'-9', wrong:['9','6','-6']},
-  {id:71, diff:'medium', cat:'potegi', type:'mc', q:'Co to jest 2⁻¹?', correct:'0,5', wrong:['2','-2','-0,5']},
-  {id:72, diff:'medium', cat:'potegi', type:'mc', q:'Co to jest 4⁻¹?', correct:'0,25', wrong:['0,4','-4','-0,25']},
-  {id:73, diff:'medium', cat:'potegi', type:'open', q:'Ile wynosi 10⁻²?', a:'0,01'},
-  {id:74, diff:'medium', cat:'potegi', type:'open', q:'Ile wynosi 10⁻¹?', a:'0,1'},
-  {id:75, diff:'medium', cat:'potegi', type:'mc', q:'Ile wynosi 5⁻²?', correct:'0,04', wrong:['0,4','-25','0,025']},
-  {id:76, diff:'medium', cat:'potegi', type:'mc', q:'Jakim wyrażeniem jest a^(1/2)?', correct:'√a', wrong:['a/2','a²','2a']},
-  {id:77, diff:'medium', cat:'potegi', type:'mc', q:'Ile wynosi 4^(1/2)?', correct:'2', wrong:['8','16','√2']},
-  {id:78, diff:'medium', cat:'potegi', type:'open', q:'Ile wynosi 2⁴ · 2³?', a:'128'},
-  {id:79, diff:'medium', cat:'potegi', type:'open', q:'Ile wynosi 3⁵ ÷ 3³?', a:'9'},
-  {id:80, diff:'medium', cat:'potegi', type:'open', q:'Ile wynosi (4 · 5)²?', a:'400'},
-  {id:81, diff:'medium', cat:'potegi', type:'mc', q:'Upraszczając: aⁿ · aᵐ = ?', correct:'aⁿ⁺ᵐ', wrong:['aⁿ·ᵐ','a²ⁿ','aⁿ⁻ᵐ']},
-  {id:82, diff:'medium', cat:'potegi', type:'mc', q:'Upraszczając: (aⁿ)ᵐ = ?', correct:'aⁿ·ᵐ', wrong:['aⁿ⁺ᵐ','a²ⁿ','aⁿ/ᵐ']},
-  {id:83, diff:'medium', cat:'potegi', type:'open', q:'Ile wynosi 5² · 5³?', a:'3125'},
-  {id:84, diff:'medium', cat:'potegi', type:'open', q:'Ile wynosi 2⁶ ÷ 2²?', a:'16'},
-  {id:85, diff:'medium', cat:'potegi', type:'mc', q:'Ile wynosi (2⁵)⁰?', correct:'1', wrong:['32','0','2⁵']},
-  {id:86, diff:'medium', cat:'potegi', type:'open', q:'Ile wynosi 3⁴ · 3⁻²?', a:'9'},
-  {id:87, diff:'medium', cat:'potegi', type:'open', q:'Ile wynosi (-4)²?', a:'16'},
-  {id:88, diff:'medium', cat:'potegi', type:'open', q:'Ile wynosi (-2)⁵?', a:'-32'},
-  {id:89, diff:'medium', cat:'potegi', type:'mc', q:'Ile wynosi (½)²?', correct:'1/4', wrong:['1/2','1','1/8']},
-  {id:90, diff:'medium', cat:'potegi', type:'mc', q:'Ile wynosi (⅓)³?', correct:'1/27', wrong:['1/9','3','1/3']},
-  {id:91, diff:'medium', cat:'potegi', type:'open', q:'Ile wynosi 10² · 10³?', a:'100000'},
-  {id:92, diff:'medium', cat:'potegi', type:'open', q:'Ile wynosi 6² + 8²?', a:'100'},
-  {id:93, diff:'medium', cat:'potegi', type:'open', q:'Ile wynosi 13² - 12²?', a:'25'},
-  {id:94, diff:'medium', cat:'potegi', type:'mc', q:'Ile wynosi (-10)³?', correct:'-1000', wrong:['1000','-30','30']},
-  {id:95, diff:'medium', cat:'potegi', type:'open', q:'Ile wynosi 2⁻³?', a:'0,125'},
-  {id:96, diff:'medium', cat:'potegi', type:'open', q:'Ile wynosi 3² + 4² (Pitagoras)?', a:'25'},
-  {id:97, diff:'medium', cat:'potegi', type:'mc', q:'Ile wynosi (ab)³?', correct:'a³b³', wrong:['a³+b³','ab³','3ab']},
-  {id:98, diff:'medium', cat:'potegi', type:'open', q:'Ile wynosi 7² - 5²?', a:'24'},
-  {id:99, diff:'medium', cat:'potegi', type:'open', q:'Ile wynosi 4² · 2³?', a:'128'},
-  {id:100, diff:'medium', cat:'potegi', type:'mc', q:'Ile wynosi (a/b)²?', correct:'a²/b²', wrong:['a/b²','a²/b','2a/2b']},
+  // ── ŚREDNIE – POTĘGI ──
+  {id:66, d:'medium', c:'potegi', t:'open', q:'Uprość: 2³ · 2⁴ – wynik to 2 do jakiej potęgi?', a:'7'},
+  {id:67, d:'medium', c:'potegi', t:'open', q:'Uprość: 3⁵ ÷ 3² – wynik to 3 do jakiej potęgi?', a:'3'},
+  {id:68, d:'medium', c:'potegi', t:'mc',   q:'Ile wynosi (2³)²?', correct:'64', wrong:['32','12','128']},
+  {id:69, d:'medium', c:'potegi', t:'mc',   q:'Ile wynosi (3²)³?', correct:'729', wrong:['216','243','81']},
+  {id:70, d:'medium', c:'potegi', t:'open', q:'Ile wynosi (-3)²?', a:'9'},
+  {id:71, d:'medium', c:'potegi', t:'open', q:'Ile wynosi (-2)³?', a:'-8'},
+  {id:72, d:'medium', c:'potegi', t:'open', q:'Ile wynosi (-5)²?', a:'25'},
+  {id:73, d:'medium', c:'potegi', t:'open', q:'Ile wynosi (-1)¹⁰⁰?', a:'1'},
+  {id:74, d:'medium', c:'potegi', t:'open', q:'Ile wynosi (-1)⁷?', a:'-1'},
+  {id:75, d:'medium', c:'potegi', t:'mc',   q:'Ile wynosi -3²?', correct:'-9', wrong:['9','6','-6']},
+  {id:76, d:'medium', c:'potegi', t:'mc',   q:'Co to jest 2⁻¹?', correct:'0,5', wrong:['2','-2','-0,5']},
+  {id:77, d:'medium', c:'potegi', t:'mc',   q:'Co to jest 4⁻¹?', correct:'0,25', wrong:['0,4','-4','-0,25']},
+  {id:78, d:'medium', c:'potegi', t:'open', q:'Ile wynosi 10⁻²?', a:'0,01'},
+  {id:79, d:'medium', c:'potegi', t:'open', q:'Ile wynosi 10⁻¹?', a:'0,1'},
+  {id:80, d:'medium', c:'potegi', t:'mc',   q:'Ile wynosi 5⁻²?', correct:'0,04', wrong:['0,4','-25','0,025']},
+  {id:81, d:'medium', c:'potegi', t:'mc',   q:'Jakim wyrażeniem jest a^(1/2)?', correct:'√a', wrong:['a/2','a²','2a']},
+  {id:82, d:'medium', c:'potegi', t:'mc',   q:'Ile wynosi 4^(1/2)?', correct:'2', wrong:['8','16','√2']},
+  {id:83, d:'medium', c:'potegi', t:'open', q:'Ile wynosi 2⁴ · 2³?', a:'128'},
+  {id:84, d:'medium', c:'potegi', t:'open', q:'Ile wynosi 3⁵ ÷ 3³?', a:'9'},
+  {id:85, d:'medium', c:'potegi', t:'open', q:'Ile wynosi (4 · 5)²?', a:'400'},
+  {id:86, d:'medium', c:'potegi', t:'mc',   q:'Upraszczając: aⁿ · aᵐ = ?', correct:'aⁿ⁺ᵐ', wrong:['aⁿ·ᵐ','a²ⁿ','aⁿ⁻ᵐ']},
+  {id:87, d:'medium', c:'potegi', t:'mc',   q:'Upraszczając: (aⁿ)ᵐ = ?', correct:'aⁿ·ᵐ', wrong:['aⁿ⁺ᵐ','a²ⁿ','aⁿ/ᵐ']},
+  {id:88, d:'medium', c:'potegi', t:'open', q:'Ile wynosi 5² · 5³?', a:'3125'},
+  {id:89, d:'medium', c:'potegi', t:'open', q:'Ile wynosi 2⁶ ÷ 2²?', a:'16'},
+  {id:90, d:'medium', c:'potegi', t:'mc',   q:'Ile wynosi (2⁵)⁰?', correct:'1', wrong:['32','0','2⁵']},
+  {id:91, d:'medium', c:'potegi', t:'open', q:'Ile wynosi 3⁴ · 3⁻²?', a:'9'},
+  {id:92, d:'medium', c:'potegi', t:'open', q:'Ile wynosi (-4)²?', a:'16'},
+  {id:93, d:'medium', c:'potegi', t:'open', q:'Ile wynosi (-2)⁵?', a:'-32'},
+  {id:94, d:'medium', c:'potegi', t:'mc',   q:'Ile wynosi (½)²?', correct:'1/4', wrong:['1/2','1','1/8']},
+  {id:95, d:'medium', c:'potegi', t:'mc',   q:'Ile wynosi (⅓)³?', correct:'1/27', wrong:['1/9','3','1/3']},
+  {id:96, d:'medium', c:'potegi', t:'open', q:'Ile wynosi 10² · 10³?', a:'100000'},
+  {id:97, d:'medium', c:'potegi', t:'open', q:'Ile wynosi 6² + 8²?', a:'100'},
+  {id:98, d:'medium', c:'potegi', t:'open', q:'Ile wynosi 13² - 12²?', a:'25'},
+  {id:99, d:'medium', c:'potegi', t:'mc',   q:'Ile wynosi (-10)³?', correct:'-1000', wrong:['1000','-30','30']},
+  {id:100,d:'medium', c:'potegi', t:'open', q:'Ile wynosi 2⁻³?', a:'0,125'},
+  {id:101,d:'medium', c:'potegi', t:'open', q:'Ile wynosi 3² + 4²?', a:'25'},
+  {id:102,d:'medium', c:'potegi', t:'mc',   q:'Ile wynosi (ab)³?', correct:'a³b³', wrong:['a³+b³','ab³','3ab']},
+  {id:103,d:'medium', c:'potegi', t:'open', q:'Ile wynosi 7² - 5²?', a:'24'},
+  {id:104,d:'medium', c:'potegi', t:'open', q:'Ile wynosi 4² · 2³?', a:'128'},
+  {id:105,d:'medium', c:'potegi', t:'mc',   q:'Ile wynosi (a/b)²?', correct:'a²/b²', wrong:['a/b²','a²/b','2a/2b']},
+  {id:106,d:'medium', c:'potegi', t:'open', q:'Ile wynosi (-3)⁴?', a:'81'},
+  {id:107,d:'medium', c:'potegi', t:'open', q:'Ile wynosi (-4)³?', a:'-64'},
+  {id:108,d:'medium', c:'potegi', t:'mc',   q:'Co to jest 10⁻³?', correct:'0,001', wrong:['0,01','1000','-1000']},
+  {id:109,d:'medium', c:'potegi', t:'open', q:'Ile wynosi 5² · 4²?', a:'400'},
+  {id:110,d:'medium', c:'potegi', t:'open', q:'Uprość: 5⁶ ÷ 5⁴ – wynik to 5 do jakiej potęgi?', a:'2'},
 
-  // ---------- ŚREDNIE – PIERWIASTKI (101-115) ----------
-  {id:101, diff:'medium', cat:'pierwiastki', type:'open', q:'Oblicz: √2 · √8', a:'4'},
-  {id:102, diff:'medium', cat:'pierwiastki', type:'open', q:'Oblicz: √3 · √12', a:'6'},
-  {id:103, diff:'medium', cat:'pierwiastki', type:'open', q:'Oblicz: √18 ÷ √2', a:'3'},
-  {id:104, diff:'medium', cat:'pierwiastki', type:'open', q:'Oblicz: √50 ÷ √2', a:'5'},
-  {id:105, diff:'medium', cat:'pierwiastki', type:'mc', q:'Ile wynosi √(9 · 16)?', correct:'12', wrong:['25','√25','√9 + √16']},
-  {id:106, diff:'medium', cat:'pierwiastki', type:'open', q:'Uprość: √12 (wynik: a√b)', a:'2√3'},
-  {id:107, diff:'medium', cat:'pierwiastki', type:'open', q:'Uprość: √18 (wynik: a√b)', a:'3√2'},
-  {id:108, diff:'medium', cat:'pierwiastki', type:'open', q:'Uprość: √20 (wynik: a√b)', a:'2√5'},
-  {id:109, diff:'medium', cat:'pierwiastki', type:'open', q:'Uprość: √45 (wynik: a√b)', a:'3√5'},
-  {id:110, diff:'medium', cat:'pierwiastki', type:'mc', q:'Ile wynosi √169?', correct:'13', wrong:['12','14','√13']},
-  {id:111, diff:'medium', cat:'pierwiastki', type:'open', q:'Oblicz: √196', a:'14'},
-  {id:112, diff:'medium', cat:'pierwiastki', type:'open', q:'Oblicz: √256', a:'16'},
-  {id:113, diff:'medium', cat:'pierwiastki', type:'open', q:'Oblicz: √289', a:'17'},
-  {id:114, diff:'medium', cat:'pierwiastki', type:'open', q:'Ile wynosi (√5 + √5)²?', a:'20'},
-  {id:115, diff:'medium', cat:'pierwiastki', type:'mc', q:'Czy √(-4) jest liczbą rzeczywistą?', correct:'Nie', wrong:['Tak','To zależy','Tak, wynosi -2']},
+  // ── ŚREDNIE – PIERWIASTKI ──
+  {id:111,d:'medium', c:'pierwiastki', t:'open', q:'Oblicz: √2 · √8',  a:'4'},
+  {id:112,d:'medium', c:'pierwiastki', t:'open', q:'Oblicz: √3 · √12', a:'6'},
+  {id:113,d:'medium', c:'pierwiastki', t:'open', q:'Oblicz: √18 ÷ √2', a:'3'},
+  {id:114,d:'medium', c:'pierwiastki', t:'open', q:'Oblicz: √50 ÷ √2', a:'5'},
+  {id:115,d:'medium', c:'pierwiastki', t:'mc',   q:'Ile wynosi √(9 · 16)?', correct:'12', wrong:['25','√25','√9 + √16']},
+  {id:116,d:'medium', c:'pierwiastki', t:'open', q:'Uprość: √12 (wynik: a√b)', a:'2√3'},
+  {id:117,d:'medium', c:'pierwiastki', t:'open', q:'Uprość: √18 (wynik: a√b)', a:'3√2'},
+  {id:118,d:'medium', c:'pierwiastki', t:'open', q:'Uprość: √20 (wynik: a√b)', a:'2√5'},
+  {id:119,d:'medium', c:'pierwiastki', t:'open', q:'Uprość: √45 (wynik: a√b)', a:'3√5'},
+  {id:120,d:'medium', c:'pierwiastki', t:'open', q:'Oblicz: √196', a:'14'},
+  {id:121,d:'medium', c:'pierwiastki', t:'open', q:'Oblicz: √324', a:'18'},
+  {id:122,d:'medium', c:'pierwiastki', t:'open', q:'Oblicz: √361', a:'19'},
+  {id:123,d:'medium', c:'pierwiastki', t:'open', q:'Ile wynosi (√5 + √5)²?', a:'20'},
+  {id:124,d:'medium', c:'pierwiastki', t:'mc',   q:'Czy √(-4) jest liczbą rzeczywistą?', correct:'Nie', wrong:['Tak','To zależy','Tak, wynosi -2']},
+  {id:125,d:'medium', c:'pierwiastki', t:'open', q:'Oblicz: √5 · √5', a:'5'},
+  {id:126,d:'medium', c:'pierwiastki', t:'open', q:'Oblicz: √(16 · 9)', a:'12'},
+  {id:127,d:'medium', c:'pierwiastki', t:'open', q:'Uprość: √48 (wynik: a√b)', a:'4√3'},
+  {id:128,d:'medium', c:'pierwiastki', t:'open', q:'Uprość: √50 (wynik: a√b)', a:'5√2'},
+  {id:129,d:'medium', c:'pierwiastki', t:'mc',   q:'Ile wynosi √(100/4)?', correct:'5', wrong:['25','10','√25']},
+  {id:130,d:'medium', c:'pierwiastki', t:'open', q:'Ile wynosi ∛(-27)?', a:'-3'},
 
-  // ---------- TRUDNE – POTĘGI (116-135) ----------
-  {id:116, diff:'hard', cat:'potegi', type:'mc', q:'Uprość: (2x³)⁴', correct:'16x¹²', wrong:['8x¹²','2x¹²','16x⁷']},
-  {id:117, diff:'hard', cat:'potegi', type:'mc', q:'Uprość: a⁵ · a⁻³', correct:'a²', wrong:['a⁸','a⁻¹⁵','1']},
-  {id:118, diff:'hard', cat:'potegi', type:'mc', q:'Ile wynosi (−2)⁴ − (−2)³?', correct:'24', wrong:['8','-8','0']},
-  {id:119, diff:'hard', cat:'potegi', type:'open', q:'Ile wynosi 2⁵ · 2⁻⁵?', a:'1'},
-  {id:120, diff:'hard', cat:'potegi', type:'mc', q:'Jaką postać ma 8 jako potęga liczby 2?', correct:'2³', wrong:['2⁴','2²','2⁸']},
-  {id:121, diff:'hard', cat:'potegi', type:'mc', q:'Jaką postać ma 32 jako potęga liczby 2?', correct:'2⁵', wrong:['2⁴','2⁶','2³']},
-  {id:122, diff:'hard', cat:'potegi', type:'mc', q:'Uprość: (a²b³)²', correct:'a⁴b⁶', wrong:['a²b⁶','a⁴b³','a⁴b⁵']},
-  {id:123, diff:'hard', cat:'potegi', type:'open', q:'Ile wynosi 16^(3/4)?', a:'8'},
-  {id:124, diff:'hard', cat:'potegi', type:'open', q:'Ile wynosi 27^(2/3)?', a:'9'},
-  {id:125, diff:'hard', cat:'potegi', type:'mc', q:'Ile wynosi (0,1)³?', correct:'0,001', wrong:['0,01','0,3','0,0001']},
-  {id:126, diff:'hard', cat:'potegi', type:'mc', q:'Ile wynosi (0,5)⁴?', correct:'0,0625', wrong:['0,5','0,25','0,125']},
-  {id:127, diff:'hard', cat:'potegi', type:'open', q:'Ile razy większa jest 10⁵ od 10³?', a:'100'},
-  {id:128, diff:'hard', cat:'potegi', type:'mc', q:'Uprość: x⁶ ÷ x⁻²', correct:'x⁸', wrong:['x⁴','x⁻⁴','x¹²']},
-  {id:129, diff:'hard', cat:'potegi', type:'mc', q:'Ile wynosi 4³ ÷ 2⁴?', correct:'4', wrong:['2','8','16']},
-  {id:130, diff:'hard', cat:'potegi', type:'open', q:'Ile wynosi 2³ · 5³?', a:'1000'},
-  {id:131, diff:'hard', cat:'potegi', type:'mc', q:'Ile wynosi (−3)⁴?', correct:'81', wrong:['-81','12','-12']},
-  {id:132, diff:'hard', cat:'potegi', type:'open', q:'Ile wynosi 10² · 5²?', a:'2500'},
-  {id:133, diff:'hard', cat:'potegi', type:'mc', q:'Uprość: (2³)² · 2⁰', correct:'64', wrong:['128','32','1']},
-  {id:134, diff:'hard', cat:'potegi', type:'mc', q:'Ile wynosi 25^(1/2) + 36^(1/2)?', correct:'11', wrong:['√61','√25+√36','61^(1/2)']},
-  {id:135, diff:'hard', cat:'potegi', type:'open', q:'Ile wynosi 8^(2/3)?', a:'4'},
+  // ── TRUDNE – POTĘGI ──
+  {id:131,d:'hard', c:'potegi', t:'mc',   q:'Uprość: (2x³)⁴', correct:'16x¹²', wrong:['8x¹²','2x¹²','16x⁷']},
+  {id:132,d:'hard', c:'potegi', t:'mc',   q:'Uprość: a⁵ · a⁻³', correct:'a²', wrong:['a⁸','a⁻¹⁵','1']},
+  {id:133,d:'hard', c:'potegi', t:'mc',   q:'Ile wynosi (−2)⁴ − (−2)³?', correct:'24', wrong:['8','-8','0']},
+  {id:134,d:'hard', c:'potegi', t:'open', q:'Ile wynosi 2⁵ · 2⁻⁵?', a:'1'},
+  {id:135,d:'hard', c:'potegi', t:'mc',   q:'Jaką postać ma 8 jako potęga liczby 2?', correct:'2³', wrong:['2⁴','2²','2⁸']},
+  {id:136,d:'hard', c:'potegi', t:'mc',   q:'Jaką postać ma 32 jako potęga liczby 2?', correct:'2⁵', wrong:['2⁴','2⁶','2³']},
+  {id:137,d:'hard', c:'potegi', t:'mc',   q:'Uprość: (a²b³)²', correct:'a⁴b⁶', wrong:['a²b⁶','a⁴b³','a⁴b⁵']},
+  {id:138,d:'hard', c:'potegi', t:'open', q:'Ile wynosi 16^(3/4)?', a:'8'},
+  {id:139,d:'hard', c:'potegi', t:'open', q:'Ile wynosi 27^(2/3)?', a:'9'},
+  {id:140,d:'hard', c:'potegi', t:'mc',   q:'Ile wynosi (0,1)³?', correct:'0,001', wrong:['0,01','0,3','0,0001']},
+  {id:141,d:'hard', c:'potegi', t:'mc',   q:'Ile wynosi (0,5)⁴?', correct:'0,0625', wrong:['0,5','0,25','0,125']},
+  {id:142,d:'hard', c:'potegi', t:'open', q:'Ile razy większa jest 10⁵ od 10³?', a:'100'},
+  {id:143,d:'hard', c:'potegi', t:'mc',   q:'Uprość: x⁶ ÷ x⁻²', correct:'x⁸', wrong:['x⁴','x⁻⁴','x¹²']},
+  {id:144,d:'hard', c:'potegi', t:'mc',   q:'Ile wynosi 4³ ÷ 2⁴?', correct:'4', wrong:['2','8','16']},
+  {id:145,d:'hard', c:'potegi', t:'open', q:'Ile wynosi 2³ · 5³?', a:'1000'},
+  {id:146,d:'hard', c:'potegi', t:'mc',   q:'Ile wynosi (−3)⁴?', correct:'81', wrong:['-81','12','-12']},
+  {id:147,d:'hard', c:'potegi', t:'open', q:'Ile wynosi 10² · 5²?', a:'2500'},
+  {id:148,d:'hard', c:'potegi', t:'mc',   q:'Uprość: (2³)² · 2⁰', correct:'64', wrong:['128','32','1']},
+  {id:149,d:'hard', c:'potegi', t:'mc',   q:'Ile wynosi 25^(1/2) + 36^(1/2)?', correct:'11', wrong:['√61','√25+√36','61^(1/2)']},
+  {id:150,d:'hard', c:'potegi', t:'open', q:'Ile wynosi 8^(2/3)?', a:'4'},
+  {id:151,d:'hard', c:'potegi', t:'mc',   q:'Co to jest 2⁻⁴?', correct:'1/16', wrong:['1/8','-8','1/4']},
+  {id:152,d:'hard', c:'potegi', t:'open', q:'Ile wynosi (3⁴ · 3⁻²) ÷ 3?', a:'3'},
+  {id:153,d:'hard', c:'potegi', t:'mc',   q:'Ile wynosi 64^(1/3)?', correct:'4', wrong:['8','16','∛4']},
+  {id:154,d:'hard', c:'potegi', t:'open', q:'Ile wynosi 4^(3/2)?', a:'8'},
+  {id:155,d:'hard', c:'potegi', t:'mc',   q:'Uprość: (3x²)³', correct:'27x⁶', wrong:['9x⁶','3x⁶','27x⁵']},
+  {id:156,d:'hard', c:'potegi', t:'open', q:'Ile wynosi 9^(3/2)?', a:'27'},
+  {id:157,d:'hard', c:'potegi', t:'mc',   q:'Jaką postać ma 81 jako potęga liczby 3?', correct:'3⁴', wrong:['3³','3²','3⁸']},
+  {id:158,d:'hard', c:'potegi', t:'open', q:'Ile wynosi (2⁴)³ ÷ 2¹⁰?', a:'4'},
+  {id:159,d:'hard', c:'potegi', t:'mc',   q:'Ile wynosi a⁰ · a⁵?', correct:'a⁵', wrong:['a⁰','0','1']},
+  {id:160,d:'hard', c:'potegi', t:'open', q:'Ile wynosi 3⁻² + 3⁻¹?', a:'4/9'},
 
-  // ---------- TRUDNE – PIERWIASTKI (136-150) ----------
-  {id:136, diff:'hard', cat:'pierwiastki', type:'mc', q:'Uprość: √(4a²)', correct:'2|a|', wrong:['2a','4a','2a²']},
-  {id:137, diff:'hard', cat:'pierwiastki', type:'open', q:'Oblicz: √5 · √20', a:'10'},
-  {id:138, diff:'hard', cat:'pierwiastki', type:'mc', q:'Ile wynosi √3 · √3?', correct:'3', wrong:['9','√6','6']},
-  {id:139, diff:'hard', cat:'pierwiastki', type:'mc', q:'Ile wynosi (√2 + √2)²?', correct:'8', wrong:['4','2√2','4√2']},
-  {id:140, diff:'hard', cat:'pierwiastki', type:'open', q:'Uprość: √75 (wynik: a√b)', a:'5√3'},
-  {id:141, diff:'hard', cat:'pierwiastki', type:'open', q:'Uprość: √98 (wynik: a√b)', a:'7√2'},
-  {id:142, diff:'hard', cat:'pierwiastki', type:'open', q:'Oblicz: ∛(-27)', a:'-3'},
-  {id:143, diff:'hard', cat:'pierwiastki', type:'open', q:'Oblicz: ∛(-8)', a:'-2'},
-  {id:144, diff:'hard', cat:'pierwiastki', type:'mc', q:'Ile wynosi √(25/4)?', correct:'5/2', wrong:['5/4','25/2','√25/√2']},
-  {id:145, diff:'hard', cat:'pierwiastki', type:'mc', q:'Ile wynosi (3√2)²?', correct:'18', wrong:['9√2','6√2','36']},
-  {id:146, diff:'hard', cat:'pierwiastki', type:'open', q:'Ile wynosi √(16 · 25)?', a:'20'},
-  {id:147, diff:'hard', cat:'pierwiastki', type:'mc', q:'Uprość: ∜(16)', correct:'2', wrong:['4','8','√2']},
-  {id:148, diff:'hard', cat:'pierwiastki', type:'open', q:'Oblicz: √(3² + 4²)', a:'5'},
-  {id:149, diff:'hard', cat:'pierwiastki', type:'mc', q:'Ile wynosi 2√3 · 3√3?', correct:'18', wrong:['6√3','6','√18']},
-  {id:150, diff:'hard', cat:'pierwiastki', type:'mc', q:'Ile wynosi (√a)⁴?', correct:'a²', wrong:['a','√a','a⁴']},
+  // ── TRUDNE – PIERWIASTKI ──
+  {id:161,d:'hard', c:'pierwiastki', t:'mc',   q:'Uprość: √(4a²)', correct:'2|a|', wrong:['2a','4a','2a²']},
+  {id:162,d:'hard', c:'pierwiastki', t:'open', q:'Oblicz: √5 · √20', a:'10'},
+  {id:163,d:'hard', c:'pierwiastki', t:'mc',   q:'Ile wynosi √3 · √3?', correct:'3', wrong:['9','√6','6']},
+  {id:164,d:'hard', c:'pierwiastki', t:'mc',   q:'Ile wynosi (√2 + √2)²?', correct:'8', wrong:['4','2√2','4√2']},
+  {id:165,d:'hard', c:'pierwiastki', t:'open', q:'Uprość: √75 (wynik: a√b)', a:'5√3'},
+  {id:166,d:'hard', c:'pierwiastki', t:'open', q:'Uprość: √98 (wynik: a√b)', a:'7√2'},
+  {id:167,d:'hard', c:'pierwiastki', t:'open', q:'Oblicz: ∛(-8)', a:'-2'},
+  {id:168,d:'hard', c:'pierwiastki', t:'mc',   q:'Ile wynosi √(25/4)?', correct:'5/2', wrong:['5/4','25/2','√25/√2']},
+  {id:169,d:'hard', c:'pierwiastki', t:'mc',   q:'Ile wynosi (3√2)²?', correct:'18', wrong:['9√2','6√2','36']},
+  {id:170,d:'hard', c:'pierwiastki', t:'open', q:'Ile wynosi √(16 · 25)?', a:'20'},
+  {id:171,d:'hard', c:'pierwiastki', t:'mc',   q:'Uprość: ∜16', correct:'2', wrong:['4','8','√2']},
+  {id:172,d:'hard', c:'pierwiastki', t:'open', q:'Oblicz: √(3² + 4²)', a:'5'},
+  {id:173,d:'hard', c:'pierwiastki', t:'mc',   q:'Ile wynosi 2√3 · 3√3?', correct:'18', wrong:['6√3','6','√18']},
+  {id:174,d:'hard', c:'pierwiastki', t:'mc',   q:'Ile wynosi (√a)⁴?', correct:'a²', wrong:['a','√a','a⁴']},
+  {id:175,d:'hard', c:'pierwiastki', t:'open', q:'Uprość: √72 (wynik: a√b)', a:'6√2'},
+  {id:176,d:'hard', c:'pierwiastki', t:'open', q:'Uprość: √108 (wynik: a√b)', a:'6√3'},
+  {id:177,d:'hard', c:'pierwiastki', t:'mc',   q:'Ile wynosi (2√5)²?', correct:'20', wrong:['4√5','10','4√25']},
+  {id:178,d:'hard', c:'pierwiastki', t:'open', q:'Oblicz: √(12² + 5²)', a:'13'},
+  {id:179,d:'hard', c:'pierwiastki', t:'mc',   q:'Ile wynosi √2 · √18?', correct:'6', wrong:['√20','9','3√2']},
+  {id:180,d:'hard', c:'pierwiastki', t:'open', q:'Ile wynosi (√3)⁶?', a:'27'},
+
+  // ── DODATKOWE – MIESZANE ──
+  {id:181,d:'medium', c:'potegi', t:'open', q:'Ile wynosi 2⁹?', a:'512'},
+  {id:182,d:'medium', c:'potegi', t:'open', q:'Ile wynosi 6² · 2²?', a:'144'},
+  {id:183,d:'easy',   c:'potegi', t:'mc',   q:'Ile wynosi 2¹?', correct:'2', wrong:['1','4','0']},
+  {id:184,d:'easy',   c:'pierwiastki', t:'open', q:'Oblicz: √0',    a:'0'},
+  {id:185,d:'medium', c:'potegi', t:'open', q:'Ile wynosi (-6)²?', a:'36'},
+  {id:186,d:'medium', c:'potegi', t:'open', q:'Ile wynosi (-7)²?', a:'49'},
+  {id:187,d:'medium', c:'pierwiastki', t:'open', q:'Oblicz: √(4 · 49)', a:'14'},
+  {id:188,d:'hard',   c:'potegi', t:'mc',   q:'Uprość: (a³)⁰', correct:'1', wrong:['a³','a⁰','0']},
+  {id:189,d:'medium', c:'potegi', t:'open', q:'Ile wynosi 3² · 4²?', a:'144'},
+  {id:190,d:'hard',   c:'pierwiastki', t:'mc',   q:'Uprość: √(a⁴)', correct:'a²', wrong:['a','a⁴','2a²']},
+  {id:191,d:'medium', c:'potegi', t:'open', q:'Ile wynosi (½)³?', a:'1/8'},
+  {id:192,d:'medium', c:'potegi', t:'mc',   q:'Ile wynosi 2⁴ · 3²?', correct:'144', wrong:['72','48','288']},
+  {id:193,d:'hard',   c:'potegi', t:'open', q:'Ile wynosi 100^(1/2)?', a:'10'},
+  {id:194,d:'hard',   c:'pierwiastki', t:'open', q:'Uprość: √(25 · 3) (wynik: a√b)', a:'5√3'},
+  {id:195,d:'medium', c:'potegi', t:'open', q:'Ile wynosi 5⁰ + 5¹ + 5²?', a:'31'},
+  {id:196,d:'hard',   c:'potegi', t:'mc',   q:'Ile wynosi 2¹⁰ ÷ 2⁸?', correct:'4', wrong:['2','8','16']},
+  {id:197,d:'medium', c:'pierwiastki', t:'open', q:'Oblicz: √(9 + 16)', a:'5'},
+  {id:198,d:'hard',   c:'potegi', t:'open', q:'Ile wynosi (2³ + 2³)?', a:'16'},
+  {id:199,d:'medium', c:'potegi', t:'open', q:'Ile wynosi 3² − 2³?', a:'1'},
+  {id:200,d:'hard',   c:'pierwiastki', t:'mc',   q:'Ile wynosi ∛(−125)?', correct:'-5', wrong:['5','-25','∛5']},
 ];
 
-// ===================== STATE =====================
-let currentFilter = 'all';
-let shuffled = [];
-let currentIndex = 0;
-let correct = 0, wrong = 0;
-let answered = false;
+// ── STATE ──
+let filter = 'all', deck = [], idx = 0, ok = 0, err = 0, done = false;
 
-function getFiltered() {
-  return ALL_QUESTIONS.filter(q => {
-    if (currentFilter === 'all') return true;
-    if (currentFilter === 'easy') return q.diff === 'easy';
-    if (currentFilter === 'medium') return q.diff === 'medium';
-    if (currentFilter === 'hard') return q.diff === 'hard';
-    if (currentFilter === 'potegi') return q.cat === 'potegi';
-    if (currentFilter === 'pierwiastki') return q.cat === 'pierwiastki';
-    return true;
+function filtered() {
+  return Q.filter(q => {
+    if (filter === 'all') return true;
+    if (filter === 'easy')   return q.d === 'easy';
+    if (filter === 'medium') return q.d === 'medium';
+    if (filter === 'hard')   return q.d === 'hard';
+    if (filter === 'potegi') return q.c === 'potegi';
+    if (filter === 'pierwiastki') return q.c === 'pierwiastki';
   });
 }
-
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i+1));
-    [a[i], a[j]] = [a[j], a[i]];
+function shuffle(a) {
+  const b = [...a];
+  for (let i = b.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [b[i],b[j]] = [b[j],b[i]];
   }
-  return a;
+  return b;
 }
-
 function setFilter(f, btn) {
-  currentFilter = f;
+  filter = f;
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  restartQuiz();
+  restart();
 }
-
-function restartQuiz() {
-  const filtered = getFiltered();
-  shuffled = shuffle(filtered);
-  currentIndex = 0;
-  correct = 0;
-  wrong = 0;
-  document.getElementById('result-screen').classList.remove('show');
+function restart() {
+  deck = shuffle(filtered());
+  idx = 0; ok = 0; err = 0; done = false;
+  document.getElementById('result').classList.remove('show');
   document.getElementById('q-card').style.display = 'block';
   updateStats();
-  loadQuestion();
+  load();
 }
-
 function updateStats() {
-  const total = shuffled.length;
-  document.getElementById('stat-current').textContent = Math.min(currentIndex + 1, total);
-  document.getElementById('stat-total').textContent = total;
-  document.getElementById('stat-correct').textContent = correct;
-  document.getElementById('stat-wrong').textContent = wrong;
-  const done = correct + wrong;
-  document.getElementById('stat-pct').textContent = done > 0 ? Math.round(correct/done*100) + '%' : '—';
-  const pct = total > 0 ? Math.min((currentIndex / total) * 100, 100) : 0;
-  document.getElementById('progress-fill').style.width = pct + '%';
+  const tot = deck.length;
+  document.getElementById('stat-cur').textContent = Math.min(idx+1, tot);
+  document.getElementById('stat-tot').textContent = tot;
+  document.getElementById('stat-ok').textContent  = ok;
+  document.getElementById('stat-err').textContent = err;
+  const d = ok+err;
+  document.getElementById('stat-pct').textContent = d > 0 ? Math.round(ok/d*100)+'%' : '—';
+  document.getElementById('prog').style.width = tot > 0 ? Math.min(idx/tot*100,100)+'%' : '0%';
 }
 
-function loadQuestion() {
+let answered = false;
+function load() {
   answered = false;
-  document.getElementById('feedback-box').className = 'feedback-box';
+  document.getElementById('fb').className = 'feedback-box';
   document.getElementById('next-btn').className = 'next-btn';
-
-  if (currentIndex >= shuffled.length) {
-    showResult();
-    return;
-  }
-
-  const q = shuffled[currentIndex];
+  if (idx >= deck.length) { showResult(); return; }
+  const q = deck[idx];
   updateStats();
 
-  // Badge
   const badge = document.getElementById('q-badge');
-  if (q.diff === 'easy') { badge.textContent = '🟢 Łatwe'; badge.className = 'question-badge badge-easy'; }
-  else if (q.diff === 'medium') { badge.textContent = '🟡 Średnie'; badge.className = 'question-badge badge-medium'; }
-  else { badge.textContent = '🔴 Trudne'; badge.className = 'question-badge badge-hard'; }
-
+  const labels = {easy:'🟢 Łatwe', medium:'🟡 Średnie', hard:'🔴 Trudne'};
+  const cls    = {easy:'badge-easy', medium:'badge-medium', hard:'badge-hard'};
+  badge.textContent = labels[q.d];
+  badge.className   = 'q-badge ' + cls[q.d];
   document.getElementById('q-num').textContent = '#' + q.id;
   document.getElementById('q-text').textContent = q.q;
 
-  if (q.type === 'mc') {
-    document.getElementById('answers-grid').style.display = 'grid';
+  if (q.t === 'mc') {
+    document.getElementById('ans-grid').style.display = 'grid';
     document.getElementById('open-row').style.display = 'none';
     renderMC(q);
   } else {
-    document.getElementById('answers-grid').style.display = 'none';
+    document.getElementById('ans-grid').style.display = 'none';
     document.getElementById('open-row').style.display = 'flex';
-    const inp = document.getElementById('open-input');
-    inp.value = '';
-    inp.className = 'answer-input';
-    inp.disabled = false;
-    inp.focus();
+    const inp = document.getElementById('open-inp');
+    inp.value = ''; inp.className = 'open-input'; inp.disabled = false;
+    setTimeout(() => inp.focus(), 50);
   }
 }
 
 function renderMC(q) {
-  const options = shuffle([q.correct, ...q.wrong]);
-  const grid = document.getElementById('answers-grid');
+  const opts = shuffle([q.correct, ...q.wrong]);
+  const grid = document.getElementById('ans-grid');
   grid.innerHTML = '';
-  options.forEach(opt => {
+  opts.forEach(o => {
     const btn = document.createElement('button');
-    btn.className = 'answer-btn';
-    btn.textContent = opt;
-    btn.onclick = () => checkMC(btn, opt, q.correct, grid);
+    btn.className = 'ans-btn';
+    btn.textContent = o;
+    btn.onclick = () => checkMC(btn, o, q.correct, grid);
     grid.appendChild(btn);
   });
 }
 
-function checkMC(btn, chosen, correct_ans, grid) {
+function checkMC(btn, chosen, correct, grid) {
   if (answered) return;
   answered = true;
-  const allBtns = grid.querySelectorAll('.answer-btn');
-  allBtns.forEach(b => {
+  grid.querySelectorAll('.ans-btn').forEach(b => {
     b.disabled = true;
-    if (b.textContent === correct_ans) b.classList.add(chosen === correct_ans ? 'correct' : 'reveal');
+    if (b.textContent === correct) b.classList.add(chosen === correct ? 'correct' : 'reveal');
   });
-  if (chosen === correct_ans) {
-    btn.classList.add('correct');
-    showFeedback(true);
-    correct++;
-  } else {
-    btn.classList.add('wrong');
-    showFeedback(false, correct_ans);
-    wrong++;
-  }
+  if (chosen === correct) { btn.classList.add('correct'); feedback(true); ok++; }
+  else                    { btn.classList.add('wrong');   feedback(false, correct); err++; }
   document.getElementById('next-btn').classList.add('show');
   updateStats();
 }
 
 function checkOpen() {
   if (answered) return;
-  const inp = document.getElementById('open-input');
-  const val = inp.value.trim().replace(',', '.').toLowerCase();
-  const q = shuffled[currentIndex];
-  const expected = q.a.trim().replace(',', '.').toLowerCase();
-
-  // Accept equivalent forms (e.g. "2√3" and "2*√3")
-  const normalize = s => s.replace(/\s/g,'').replace(/\*/g,'').replace(/×/g,'');
-  const isCorrect = normalize(val) === normalize(expected);
-
+  const inp = document.getElementById('open-inp');
+  const val = inp.value.trim().replace(',','.').toLowerCase();
+  const q   = deck[idx];
+  const exp = q.a.trim().replace(',','.').toLowerCase();
+  const norm = s => s.replace(/\s/g,'').replace(/\*/g,'').replace(/×/g,'');
+  const isOk = norm(val) === norm(exp);
   answered = true;
   inp.disabled = true;
-  inp.className = 'answer-input ' + (isCorrect ? 'correct' : 'wrong');
-
-  if (isCorrect) {
-    showFeedback(true);
-    correct++;
-  } else {
-    showFeedback(false, q.a);
-    wrong++;
-  }
+  inp.className = 'open-input ' + (isOk ? 'correct' : 'wrong');
+  if (isOk) { feedback(true); ok++; } else { feedback(false, q.a); err++; }
   document.getElementById('next-btn').classList.add('show');
   updateStats();
 }
 
-function showFeedback(isCorrect, correctAns) {
-  const box = document.getElementById('feedback-box');
-  if (isCorrect) {
-    box.className = 'feedback-box correct-fb show';
-    const msgs = ['✅ Świetnie! Poprawna odpowiedź!', '✅ Brawo! Dobra robota!', '✅ Doskonale! Tak trzymaj!', '✅ Perfekcyjnie!'];
+function feedback(isOk, ans) {
+  const box = document.getElementById('fb');
+  if (isOk) {
+    const msgs = ['✅ Świetnie! Tak trzymaj!','✅ Brawo! Dobra robota!','✅ Doskonale!','✅ Perfekcyjnie! Super!'];
     box.textContent = msgs[Math.floor(Math.random()*msgs.length)];
+    box.className = 'feedback-box correct-fb show';
   } else {
+    box.textContent = '❌ Błąd! Poprawna odpowiedź: ' + ans;
     box.className = 'feedback-box wrong-fb show';
-    box.textContent = '❌ Błąd! Poprawna odpowiedź: ' + correctAns;
   }
 }
 
 function loadNext() {
-  currentIndex++;
-  // re-render card with animation
+  idx++;
   const card = document.getElementById('q-card');
   card.style.animation = 'none';
-  requestAnimationFrame(() => {
-    card.style.animation = '';
-    loadQuestion();
-  });
+  requestAnimationFrame(() => { card.style.animation = ''; load(); });
 }
-
-function skipQuestion() {
-  currentIndex++;
-  loadQuestion();
-}
+function skip() { idx++; load(); }
 
 function showResult() {
   document.getElementById('q-card').style.display = 'none';
-  const rs = document.getElementById('result-screen');
+  const rs = document.getElementById('result');
   rs.classList.add('show');
-  const total = correct + wrong;
-  const pct = total > 0 ? Math.round(correct/total*100) : 0;
-  document.getElementById('result-score').textContent = correct + '/' + total;
-  let emoji = '😔'; let label = 'Ćwicz więcej – dasz radę!';
-  if (pct >= 90) { emoji = '🏆'; label = 'Wynik znakomity! Jesteś mistrzem potęg!'; }
+  const tot = ok + err;
+  const pct = tot > 0 ? Math.round(ok/tot*100) : 0;
+  document.getElementById('r-score').textContent = ok + '/' + tot;
+  document.getElementById('r-pct').textContent   = pct + '%';
+  let emoji = '😔', label = 'Ćwicz więcej – dasz radę!';
+  if (pct >= 90) { emoji = '🏆'; label = 'Wynik znakomity! Jesteś mistrzem!'; }
   else if (pct >= 70) { emoji = '🎉'; label = 'Świetny wynik! Bardzo dobrze!'; }
-  else if (pct >= 50) { emoji = '👍'; label = 'Niezły wynik – powtórz trudniejsze tematy!'; }
-  document.getElementById('result-emoji').textContent = emoji;
-  document.getElementById('result-label').textContent = label;
+  else if (pct >= 50) { emoji = '👍'; label = 'Niezły wynik! Powtórz słabsze tematy.'; }
+  document.getElementById('r-emoji').textContent = emoji;
+  document.getElementById('r-label').textContent = label;
 }
 
-// ===================== TABS =====================
-function switchTab(tab) {
+function switchTab(tab, btn) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + tab).classList.add('active');
-  event.target.classList.add('active');
-  if (tab === 'praktyka' && shuffled.length === 0) restartQuiz();
+  btn.classList.add('active');
+  if (tab === 'praktyka' && deck.length === 0) restart();
 }
 
-// Init
-restartQuiz();
+restart();
 </script>
 </body>
 </html>
