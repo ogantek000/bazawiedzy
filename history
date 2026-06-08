@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Historyczny — Przygotowanie do Odpowiedzi Ustnej</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: #f5f3ee;
+    color: #1a1a1a;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #d8d3c8;
+  }
+
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+  }
+
+  .header p {
+    font-size: 15px;
+    color: #666;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 2rem;
+  }
+
+  .stat-card {
+    background: #fff;
+    border: 1px solid #e0dbd2;
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .stat-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    display: block;
+  }
+
+  .stat-val.green { color: #3B6D11; }
+  .stat-val.red { color: #A32D2D; }
+  .stat-val.purple { color: #534AB7; }
+
+  .stat-lbl {
+    font-size: 13px;
+    color: #888;
+    margin-top: 3px;
+    display: block;
+  }
+
+  .epoki-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 10px;
+    margin-bottom: 2rem;
+  }
+
+  .epoka-btn {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 14px 10px;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #1a1a1a;
+    transition: all 0.15s;
+  }
+
+  .epoka-btn:hover { background: #f0ede8; border-color: #bbb; }
+
+  .epoka-btn.active {
+    border-color: #534AB7;
+    background: #EEEDFE;
+    color: #534AB7;
+  }
+
+  .epoka-btn .era-icon { font-size: 22px; display: block; margin-bottom: 5px; }
+  .epoka-btn .era-name { display: block; line-height: 1.3; }
+  .epoka-btn .era-range { display: block; font-size: 11px; color: #999; font-weight: 400; margin-top: 2px; }
+
+  .quiz-area {
+    background: #fff;
+    border: 1px solid #e0dbd2;
+    border-radius: 14px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    display: none;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: #eee;
+    border-radius: 99px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: #534AB7;
+    border-radius: 99px;
+    transition: width 0.4s ease;
+  }
+
+  .q-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.2rem;
+  }
+
+  .q-badge {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 99px;
+    background: #EEEDFE;
+    color: #534AB7;
+  }
+
+  .q-counter {
+    font-size: 13px;
+    color: #888;
+  }
+
+  .q-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 19px;
+    line-height: 1.55;
+    margin-bottom: 1.5rem;
+    color: #1a1a1a;
+  }
+
+  .answers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  @media (max-width: 480px) {
+    .answers-grid { grid-template-columns: 1fr; }
+    .header h1 { font-size: 24px; }
+    .q-text { font-size: 16px; }
+  }
+
+  .ans-btn {
+    background: #f8f6f2;
+    border: 1px solid #e0dbd2;
+    border-radius: 10px;
+    padding: 14px 16px;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    color: #1a1a1a;
+    line-height: 1.45;
+    transition: all 0.15s;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+  }
+
+  .ans-btn:hover:not(:disabled) { border-color: #aaa; background: #f0ede8; }
+  .ans-btn.correct { background: #EAF3DE; border-color: #639922; color: #27500A; font-weight: 600; }
+  .ans-btn.wrong { background: #FCEBEB; border-color: #A32D2D; color: #501313; }
+  .ans-btn.reveal { background: #EAF3DE; border-color: #639922; color: #27500A; }
+  .ans-btn:disabled { cursor: default; }
+
+  .feedback {
+    margin-top: 1.2rem;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.6;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.ok { background: #EAF3DE; color: #27500A; border: 1px solid #639922; }
+  .feedback.fail { background: #FCEBEB; color: #501313; border: 1px solid #A32D2D; }
+
+  .btn-next {
+    margin-top: 1.2rem;
+    width: 100%;
+    padding: 14px;
+    background: #534AB7;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    display: none;
+    transition: background 0.15s;
+  }
+
+  .btn-next.show { display: block; }
+  .btn-next:hover { background: #3C3489; }
+
+  .result-area {
+    background: #fff;
+    border: 1px solid #e0dbd2;
+    border-radius: 14px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    display: none;
+  }
+
+  .result-emoji { font-size: 56px; margin-bottom: 1rem; }
+
+  .result-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .result-sub {
+    font-size: 15px;
+    color: #666;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+
+  .result-score {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: #534AB7;
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+
+  .btn-restart {
+    padding: 13px 28px;
+    background: #534AB7;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+    margin: 5px;
+    transition: background 0.15s;
+  }
+
+  .btn-restart:hover { background: #3C3489; }
+
+  .btn-other {
+    padding: 13px 28px;
+    background: #fff;
+    color: #534AB7;
+    border: 1px solid #534AB7;
+    border-radius: 10px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+    margin: 5px;
+    transition: all 0.15s;
+  }
+
+  .btn-other:hover { background: #EEEDFE; }
+
+  .footer {
+    text-align: center;
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 2rem;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>📜 Quiz Historyczny</h1>
+    <p>Przygotowanie do odpowiedzi ustnej — wybierz epokę i ćwicz!</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <span class="stat-val green" id="stat-good">0</span>
+      <span class="stat-lbl">Poprawne</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-val red" id="stat-bad">0</span>
+      <span class="stat-lbl">Błędne</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-val purple" id="stat-pct">—</span>
+      <span class="stat-lbl">Wynik</span>
+    </div>
+  </div>
+
+  <div class="epoki-grid" id="epoki"></div>
+
+  <div class="quiz-area" id="quiz-area">
+    <div class="progress-bar"><div class="progress-fill" id="prog"></div></div>
+    <div class="q-meta">
+      <span class="q-badge" id="q-era">Epoka</span>
+      <span class="q-counter" id="q-num">1 / 8</span>
+    </div>
+    <p class="q-text" id="q-text"></p>
+    <div class="answers-grid" id="answers"></div>
+    <div class="feedback" id="feedback"></div>
+    <button class="btn-next" id="btn-next">Następne pytanie →</button>
+  </div>
+
+  <div class="result-area" id="result-area">
+    <div class="result-emoji" id="res-emoji">🎉</div>
+    <span class="result-score" id="res-score">0%</span>
+    <div class="result-title" id="res-title"></div>
+    <div class="result-sub" id="res-sub"></div>
+    <div>
+      <button class="btn-restart" onclick="restartCurrent()">🔄 Spróbuj ponownie</button>
+      <button class="btn-other" onclick="document.getElementById('result-area').style.display='none'">← Wybierz inną epokę</button>
+    </div>
+  </div>
+
+  <div class="footer">Quiz historyczny — historia powszechna od starożytności do XX wieku</div>
+</div>
+
+<script>
+const data = {
+  starozytnosc: {
+    label: "Starożytność",
+    icon: "🏛️",
+    range: "do 476 n.e.",
+    questions: [
+      { q: "Który rok uznaje się za tradycyjną datę założenia Rzymu?", a: ["753 p.n.e.", "509 p.n.e.", "44 p.n.e.", "476 n.e."], correct: 0, tip: "Według legendy Romulus założył Rzym w 753 p.n.e. i od niego pochodzi nazwa miasta." },
+      { q: "Kim był Aleksander Wielki?", a: ["Cesarz Rzymu", "Król Macedonii i zdobywca", "Faraon Egiptu", "Wódz Persji"], correct: 1, tip: "Aleksander był królem Macedonii (336–323 p.n.e.) i zbudował jedno z największych imperiów starożytności, od Grecji po Indie." },
+      { q: "Jaką budowlę uważa się za cud świata starożytnego, który przetrwał do dziś?", a: ["Koloseum", "Piramida Cheopsa", "Kolos Rodyjski", "Latarnia w Aleksandrii"], correct: 1, tip: "Piramida Cheopsa w Gizie to jedyny zachowany cud świata starożytnego, wzniesiona ok. 2560 p.n.e." },
+      { q: "Co to była Republika Rzymska?", a: ["Monarchia rządzona przez cesarza", "System rządów z senatem i konsulami", "Demokracja bezpośrednia jak w Atenach", "Teokracja kapłanów"], correct: 1, tip: "Republika Rzymska (509–27 p.n.e.) rządziła się przez senat i wybieranych konsulów — przodek wielu współczesnych systemów." },
+      { q: "Która bitwa w 480 p.n.e. pokazała opór Greków wobec Persów?", a: ["Salamina", "Termopile", "Maraton", "Plateje"], correct: 1, tip: "Bitwa pod Termopilami — słynna obrona 300 Spartan Leonidasa, symbolizująca odwagę wobec ogromnej armii perskiej." },
+      { q: "Kto napisał 'Iliadę' i 'Odyseję'?", a: ["Sokrates", "Homer", "Arystoteles", "Platon"], correct: 1, tip: "Homer — legendarny grecki poeta, autor dwóch fundamentów literatury europejskiej z VIII w. p.n.e." },
+      { q: "Co to był Kodeks Hammurabiego?", a: ["Pismo klinowe Sumerów", "Jeden z najstarszych zbiorów praw", "Egipska księga umarłych", "Traktat filozoficzny"], correct: 1, tip: "Kodeks Hammurabiego (ok. 1754 p.n.e.) — babiloński zbiór 282 praw, zawierający słynną zasadę 'oko za oko'." },
+      { q: "Kiedy upadło Cesarstwo Zachodniorzymskie?", a: ["44 p.n.e.", "27 p.n.e.", "395 n.e.", "476 n.e."], correct: 3, tip: "476 n.e. to tradycyjna data końca starożytności — ostatni cesarz Romulus Augustulus został obalony przez Odoakra." },
+    ]
+  },
+  sredniowiecze: {
+    label: "Średniowiecze",
+    icon: "⚔️",
+    range: "476–1492",
+    questions: [
+      { q: "Co to były wyprawy krzyżowe?", a: ["Misje handlowe Wenecji", "Zbrojne wyprawy na Ziemię Świętą", "Podboje Mongołów", "Pielgrzymki do Rzymu"], correct: 1, tip: "Krucjaty (1096–1291) — wyprawy zbrojne chrześcijan celem odzyskania Jerozolimy z rąk muzułmanów." },
+      { q: "Kim był Karol Wielki?", a: ["Papież reformujący Kościół", "Król Franków koronowany na cesarza w 800 r.", "Władca Bizancjum", "Przywódca Wikingów"], correct: 1, tip: "Karol Wielki (768–814), koronowany przez papieża Leona III w Boże Narodzenie 800 r. — twórca imperium karolińskiego." },
+      { q: "Czym była czarna śmierć w XIV wieku?", a: ["Wojną stuletnią", "Epidemią dżumy dziesiątkującą Europę", "Trzęsieniem ziemi w Azji", "Klęską głodu w Anglii"], correct: 1, tip: "Czarna śmierć (1347–1351) zabiła ok. 30–50% ludności Europy — jedyna taka katastrofa demograficzna w historii kontynentu." },
+      { q: "Czym był feudalizm?", a: ["Systemem handlu morskiego", "Ustrojem opartym na zależnościach lennych", "Formą demokracji miejskiej", "Religią politeistyczną"], correct: 1, tip: "Feudalizm — system społeczny średniowiecza: król nadaje ziemię wasalom w zamian za służbę wojskową i lojalność." },
+      { q: "Kiedy zakończyły się wyprawy krzyżowe?", a: ["1095", "1204", "1291", "1348"], correct: 2, tip: "Rok 1291 — upadek Akki (ostatniej twierdzy krzyżowców) zakończył epokę krucjat w Ziemi Świętej." },
+      { q: "Co to była Magna Carta i kiedy ją podpisano?", a: ["Kronika franciszkanów z 1200 r.", "Wielka Karta Swobód z 1215 r.", "Konkordat papieży z 1122 r.", "Złota Bulla cesarza z 1356 r."], correct: 1, tip: "Magna Carta (1215) — dokument wymuszony na królu Janie bez Ziemi przez baronów, ograniczający władzę królewską." },
+      { q: "Czym było Bizancjum?", a: ["Królestwem Arabów", "Kontynuacją Cesarstwa Rzymskiego na wschodzie", "Cesarstwem Karola Wielkiego", "Państwem Wikingów"], correct: 1, tip: "Bizancjum (395–1453) — wschodnia część Cesarstwa Rzymskiego z centrum w Konstantynopolu, przez tysiąc lat strażnik kultury antycznej." },
+      { q: "W którym roku Kolumb dotarł do Ameryki?", a: ["1412", "1453", "1492", "1502"], correct: 2, tip: "1492 — Krzysztof Kolumb dotarł do Ameryki, co tradycyjnie wyznacza koniec średniowiecza i początek epoki nowożytnej." },
+    ]
+  },
+  nowozytnosc: {
+    label: "Nowożytność",
+    icon: "🗺️",
+    range: "1492–1789",
+    questions: [
+      { q: "Czym była reformacja w XVI wieku?", a: ["Ruchem artystycznym we Włoszech", "Buntem chłopskim w Niemczech", "Ruchem religijnym Lutra przeciw Kościołowi", "Rewolucją naukową Kopernika"], correct: 2, tip: "Reformacja (od 1517) — Marcin Luter ogłosił 95 tez, kwestionując praktyki Kościoła, co doprowadziło do podziału chrześcijaństwa." },
+      { q: "Kim był Mikołaj Kopernik?", a: ["Filozofem holenderskim", "Polskim astronomem — twórcą heliocentryzmu", "Włoskim malarzem renesansu", "Admirałem hiszpańskim"], correct: 1, tip: "Kopernik (1473–1543) — Polak, który w 'De revolutionibus' dowodził, że Ziemia krąży wokół Słońca, rewolucjonizując naukę." },
+      { q: "Co to był renesans?", a: ["Kryzysem kultury po zarazie", "Odrodzeniem kultury antycznej w Europie XIV–XVI w.", "Reformacją Kościoła zachodniego", "Rewolucją przemysłową we Włoszech"], correct: 1, tip: "Renesans (XIV–XVI w.) — odrodzenie sztuki, literatury i nauki oparte na antycznych wzorcach; Da Vinci, Michał Anioł, Szekspir." },
+      { q: "Kiedy podpisano Deklarację Niepodległości USA?", a: ["1776", "1783", "1789", "1801"], correct: 0, tip: "4 lipca 1776 — Kongres Kontynentalny uchwalił Deklarację Niepodległości, proklamując oderwanie 13 kolonii od Wielkiej Brytanii." },
+      { q: "Na czym polegała Rewolucja Naukowa XVII w.?", a: ["Odkryciu Ameryki przez Europejczyków", "Przejściu od autorytetu do badań empirycznych", "Wynalazku druku przez Gutenberga", "Reformie Kościoła przez papieża"], correct: 1, tip: "Rewolucja Naukowa (XVI–XVII w.) — Galileusz, Newton i inni oparli wiedzę na obserwacji i eksperymencie zamiast Arystotelesa." },
+      { q: "Co to był absolutyzm oświecony?", a: ["Republika zarządzana przez filozofów", "Władca rządzący nieograniczenie, lecz inspirowany Oświeceniem", "Rewolucja przeciw królom", "Kościół sprawujący władzę świecką"], correct: 1, tip: "Absolutyzm oświecony — władcy jak Fryderyk II czy Katarzyna Wielka łączyli nieograniczoną władzę z ideami Oświecenia." },
+      { q: "Kto sformułował prawa ruchu i grawitacji?", a: ["Galileusz", "Kepler", "Isaac Newton", "Kartezjusz"], correct: 2, tip: "Isaac Newton (1643–1727) sformułował prawa mechaniki i powszechnego ciążenia, wyjaśniając ruch planet i ciał na Ziemi." },
+      { q: "Kiedy Marcin Luter ogłosił swoje 95 tez?", a: ["1415", "1517", "1534", "1545"], correct: 1, tip: "31 października 1517 — Luter ogłosił 95 tez w Wittenberdze, kwestionując odpusty. Ta data jest uznawana za początek reformacji." },
+    ]
+  },
+  rewolucje: {
+    label: "Rewolucje",
+    icon: "🔥",
+    range: "1789–1870",
+    questions: [
+      { q: "Kiedy wybuchła Wielka Rewolucja Francuska?", a: ["1776", "1789", "1793", "1799"], correct: 1, tip: "14 lipca 1789 — zdobycie Bastylii stało się symbolem rewolucji i jest we Francji świętem narodowym do dziś." },
+      { q: "Co oznaczały hasła Rewolucji Francuskiej?", a: ["Jedność, siła, zwycięstwo", "Wolność, równość, braterstwo", "Bóg, honor, ojczyzna", "Pokój, chleb, ziemia"], correct: 1, tip: "'Liberté, Égalité, Fraternité' — trzy wartości, które stały się fundamentem nowoczesnej demokracji i praw człowieka." },
+      { q: "Kim był Napoleon Bonaparte?", a: ["Królem Francji przed rewolucją", "Dowódcą koalicji antyfrancuskiej", "Cesarzem Francji, który podbił większość Europy", "Przywódcą rewolucji w Anglii"], correct: 2, tip: "Napoleon (1769–1821) — z generała rewolucji stał się cesarzem (1804), podbił większość Europy i wprowadził Kodeks Napoleona." },
+      { q: "Co to był Kongres Wiedeński (1815)?", a: ["Zjazd filozofów Oświecenia", "Konferencja po klęsce Napoleona przebudowująca mapę Europy", "Traktat pokojowy po wojnie siedmioletniej", "Zjednoczenie Niemiec i Włoch"], correct: 1, tip: "Kongres Wiedeński (1814–1815) — mocarstwa Europy przywróciły porządek po epoce napoleońskiej." },
+      { q: "Czym była Wiosna Ludów?", a: ["Epidemią wiosenną 1830 r.", "Falą rewolucji w Europie 1848–1849", "Wojną Rosji z Turcją", "Ruchem nacjonalistycznym w Niemczech"], correct: 1, tip: "Wiosna Ludów (1848–1849) — rewolucje wybuchły niemal jednocześnie w Francji, Niemczech, Austro-Węgrzech, Włoszech i Polsce." },
+      { q: "Kiedy i gdzie odbyła się pierwsza rewolucja przemysłowa?", a: ["Francja, 1789", "Anglia, koniec XVIII w.", "Niemcy, połowa XIX w.", "USA, 1800"], correct: 1, tip: "Anglia, od ok. 1760 — maszyna parowa i mechanizacja tkactwa zmieniły świat bardziej niż jakakolwiek rewolucja polityczna." },
+      { q: "Kim był Karol Marks i co głosił?", a: ["Liberalny ekonomista angielski", "Twórca komunizmu — krytyk kapitalizmu i autor Manifestu", "Pruski filozofa konserwatywny", "Przywódca rewolucji we Francji"], correct: 1, tip: "Marks (1818–1883) — Manifest Komunistyczny (1848) i Kapitał (1867) stały się fundamentem socjalizmu i komunizmu XX w." },
+      { q: "Co oznaczał Kongres Wiedeński dla Polski?", a: ["Przywrócenie pełnej niepodległości", "Podział między Prusy, Austrię i Rosję", "Włączenie do Cesarstwa Napoleona", "Stworzenie autonomicznej Rzeczypospolitej"], correct: 1, tip: "Kongres Wiedeński potwierdził rozbiory Polski — ziemie polskie podzielono między trzy mocarstwa (z wyjątkiem małego Królestwa Polskiego)." },
+    ]
+  },
+  xxwiek: {
+    label: "XX Wiek",
+    icon: "⚡",
+    range: "1900–2000",
+    questions: [
+      { q: "Kiedy wybuchła I Wojna Światowa i co ją zapoczątkowało?", a: ["1912, atak Niemiec na Francję", "1914, zamach na arcyksięcia Franciszka Ferdynanda", "1916, blokada morska Anglii", "1917, rewolucja w Rosji"], correct: 1, tip: "28 czerwca 1914 — zamach w Sarajewie na austro-węgierskiego arcyksięcia uruchomił łańcuch sojuszy prowadzący do wybuchu I WŚ." },
+      { q: "Czym był Holokaust?", a: ["Bombardowaniem Londynu", "Systematycznym mordowaniem Żydów przez nazistowskie Niemcy", "Kampanią wschodnią Hitlera", "Terrorem sowieckim w ZSRR"], correct: 1, tip: "Holokaust (Shoah) — zamordowanie ok. 6 milionów Żydów przez nazistów, symbol ludobójstwa i przestroga dla ludzkości." },
+      { q: "Kiedy zakończyła się II Wojna Światowa w Europie?", a: ["8 maja 1945", "6 czerwca 1944", "2 września 1945", "30 kwietnia 1945"], correct: 0, tip: "8 maja 1945 (V-E Day) — Niemcy podpisały bezwarunkową kapitulację. 2 września 1945 to kapitulacja Japonii." },
+      { q: "Co to była zimna wojna?", a: ["Wyjątkowo mroźna zima 1947 w Europie", "Rywalizacja USA i ZSRR bez bezpośredniej konfrontacji zbrojnej", "Konflikt zbrojny w Korei", "Polityka neutralności Szwecji"], correct: 1, tip: "Zimna Wojna (1947–1991) — geopolityczna, ideologiczna i zbrojeniowa rywalizacja USA i ZSRR, podzieliła świat na dwa bloki." },
+      { q: "Co oznaczała rewolucja bolszewicka 1917 r.?", a: ["Obalenie cara przez liberałów", "Przejęcie władzy przez bolszewików Lenina i budowa ZSRR", "Rewolucję burżuazyjną w Rosji", "Wejście Rosji do I Wojny Światowej"], correct: 1, tip: "Październik 1917 — Lenin i bolszewicy przejęli władzę, doprowadzając do powstania pierwszego komunistycznego państwa świata." },
+      { q: "Kiedy upadł mur berliński?", a: ["1985", "1989", "1991", "1993"], correct: 1, tip: "9 listopada 1989 — upadek muru berlińskiego to symbol końca zimnej wojny i komunizmu w Europie Środkowej i Wschodniej." },
+      { q: "Co to była ONZ i kiedy powstała?", a: ["Liga Narodów, 1919", "Organizacja Narodów Zjednoczonych, 1945", "NATO, 1949", "Rada Europy, 1949"], correct: 1, tip: "ONZ powstała w 1945 r. po II Wojnie Światowej — jej celem jest utrzymanie pokoju i bezpieczeństwa oraz ochrona praw człowieka." },
+      { q: "Kto był twórcą teorii względności?", a: ["Max Planck", "Niels Bohr", "Albert Einstein", "Marie Curie"], correct: 2, tip: "Albert Einstein (1879–1955) — szczególna (1905) i ogólna (1915) teoria względności zrewolucjonizowały fizykę i rozumienie czasu i przestrzeni." },
+    ]
+  }
+};
+
+let currentEra = null;
+let questions = [];
+let qIndex = 0;
+let answered = false;
+let good = 0, bad = 0;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function renderEpoki() {
+  const el = document.getElementById('epoki');
+  el.innerHTML = '';
+  Object.entries(data).forEach(([key, era]) => {
+    const btn = document.createElement('button');
+    btn.className = 'epoka-btn';
+    btn.dataset.key = key;
+    btn.innerHTML = `<span class="era-icon">${era.icon}</span><span class="era-name">${era.label}</span><span class="era-range">${era.range}</span>`;
+    btn.onclick = () => startEra(key);
+    el.appendChild(btn);
+  });
+}
+
+function startEra(key) {
+  currentEra = key;
+  questions = shuffle(data[key].questions);
+  qIndex = 0;
+  answered = false;
+  good = 0; bad = 0;
+  updateStats();
+
+  document.querySelectorAll('.epoka-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.key === key);
+  });
+
+  document.getElementById('quiz-area').style.display = 'block';
+  document.getElementById('result-area').style.display = 'none';
+  renderQuestion();
+  document.getElementById('quiz-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderQuestion() {
+  answered = false;
+  const q = questions[qIndex];
+  const era = data[currentEra];
+
+  document.getElementById('q-era').textContent = era.label + ' ' + era.icon;
+  document.getElementById('q-num').textContent = (qIndex + 1) + ' / ' + questions.length;
+  document.getElementById('prog').style.width = ((qIndex / questions.length) * 100) + '%';
+  document.getElementById('q-text').textContent = q.q;
+
+  const feedback = document.getElementById('feedback');
+  feedback.className = 'feedback';
+  feedback.textContent = '';
+
+  document.getElementById('btn-next').className = 'btn-next';
+
+  const grid = document.getElementById('answers');
+  grid.innerHTML = '';
+
+  const shuffled = q.a.map((text, i) => ({ text, orig: i }));
+  shuffle(shuffled).forEach(({ text, orig }) => {
+    const btn = document.createElement('button');
+    btn.className = 'ans-btn';
+    btn.textContent = text;
+    btn.onclick = () => answer(orig, btn, Array.from(grid.querySelectorAll('.ans-btn')), shuffled);
+    grid.appendChild(btn);
+  });
+}
+
+function answer(chosen, chosenBtn, allBtns, shuffled) {
+  if (answered) return;
+  answered = true;
+  const q = questions[qIndex];
+  const isCorrect = chosen === q.correct;
+
+  if (isCorrect) good++; else bad++;
+  updateStats();
+
+  allBtns.forEach((btn, i) => {
+    btn.disabled = true;
+    const origIdx = shuffled[i] ? shuffled[i].orig : -1;
+    if (origIdx === q.correct) btn.classList.add('reveal');
+  });
+
+  if (isCorrect) {
+    chosenBtn.classList.remove('reveal');
+    chosenBtn.classList.add('correct');
+  } else {
+    chosenBtn.classList.add('wrong');
+  }
+
+  const feedback = document.getElementById('feedback');
+  feedback.textContent = (isCorrect ? '✅ Dobrze! ' : '❌ Błąd. ') + q.tip;
+  feedback.className = 'feedback show ' + (isCorrect ? 'ok' : 'fail');
+
+  const btnNext = document.getElementById('btn-next');
+  btnNext.textContent = (qIndex + 1 < questions.length) ? 'Następne pytanie →' : 'Zobacz wynik →';
+  btnNext.className = 'btn-next show';
+}
+
+function updateStats() {
+  const total = good + bad;
+  document.getElementById('stat-good').textContent = good;
+  document.getElementById('stat-bad').textContent = bad;
+  document.getElementById('stat-pct').textContent = total > 0 ? Math.round((good / total) * 100) + '%' : '—';
+}
+
+document.getElementById('btn-next').onclick = () => {
+  qIndex++;
+  if (qIndex < questions.length) {
+    renderQuestion();
+  } else {
+    showResult();
+  }
+};
+
+function showResult() {
+  const total = good + bad;
+  const score = total > 0 ? Math.round((good / total) * 100) : 0;
+  const era = data[currentEra];
+
+  document.getElementById('quiz-area').style.display = 'none';
+  document.getElementById('result-area').style.display = 'block';
+  document.getElementById('res-score').textContent = score + '%';
+
+  let emoji, title, sub;
+  if (score >= 90) {
+    emoji = '🏆'; title = 'Perfekcyjnie!';
+    sub = `Niesamowite! Profesor byłby dumny. Gotowy na szóstkę z historii!`;
+  } else if (score >= 70) {
+    emoji = '🎓'; title = 'Bardzo dobrze!';
+    sub = `Solidna wiedza z epoki "${era.label}". Jeszcze trochę i będzie piątka z plusem!`;
+  } else if (score >= 50) {
+    emoji = '📚'; title = 'Nieźle, ale ćwicz dalej!';
+    sub = `Podstawy są, ale warto powtórzyć epokę "${era.label}" jeszcze raz.`;
+  } else {
+    emoji = '💪'; title = 'Trzeba ćwiczyć!';
+    sub = `Nie poddawaj się! Każda próba to nauka. Spróbuj jeszcze raz!`;
+  }
+
+  document.getElementById('res-emoji').textContent = emoji;
+  document.getElementById('res-title').textContent = title;
+  document.getElementById('res-sub').textContent = sub;
+  document.getElementById('result-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function restartCurrent() {
+  if (currentEra) startEra(currentEra);
+}
+
+renderEpoki();
+</script>
+</body>
+</html>
